@@ -1,0 +1,45 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Modification de {{ user.prenom }} {{ user.nom }} {{ parent() }}{% endblock %}
+
+{% block titrePage %}Modification de {{ user.prenom }} {{ user.nom }}{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ path('admin.utilisateur.index') }}">Utilisateurs</a></li>
+<li class="breadcrumb-item">Modification de {{ user.prenom }} {{ user.nom }}</li>
+{% endblock %}
+
+{% block body %}
+
+<div class="clearfix">
+    Utilisateur créé {{ date_passed(user.dateCreation | date('d M Y H:i:s')) }}
+    {% if user.dateCreation != user.dateEdition %}
+        , Edité pour la dernière fois {{ date_passed(user.dateEdition | date('d M Y H:i:s')) }}
+    {% endif %}
+    <a href="#" class="btn btn-danger mb-3 float-right" data-title="Delete" data-toggle="modal" data-target="#delete" ><i class="fa fa-trash"></i> Supprimer l'utilisateur</a>
+</div>
+
+<!-- formulaire utilisateur -->
+<div class="content-section mb-4 p-4">
+    {{ include('admin/utilisateur/_form.html.twig', {form: form, button:'Modifier l\'utilisateur'}) }}
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Veuillez confirmer la suppression ?</div>
+            </div>
+            <div class="modal-footer">
+            <form method="post" action="{{ path('admin.utilisateur.delete', {id: user.id})}}">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                <button class="btn btn-danger">Supprimer</button>
+            </form>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Non</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

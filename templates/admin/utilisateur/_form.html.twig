@@ -1,0 +1,39 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="miniature">Prenom : </label>
+            {{ form_widget(form.prenom, { 'attr': {'placeholder': 'Entrer le prenom'} }) }}
+            {{ form_errors(form.prenom) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="miniature">Nom : </label>
+            {{ form_widget(form.nom, { 'attr': {'placeholder': 'Entrer le nom'} }) }}
+            {{ form_errors(form.nom) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="miniature">Role : </label>
+            {{ form_widget(form.role, { 'attr': {'placeholder': 'Entrer le role'} }) }}
+            {{ form_errors(form.role) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="miniature">Username : </label>
+            {{ form_widget(form.username, { 'attr': {'placeholder': 'Entrer le username'} }) }}
+            {{ form_errors(form.username) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <label for="miniature">Mot de passe : </label>
+            {{ form_widget(form.password, { 'attr': {'placeholder': 'Entrer le mot de passe'} }) }}
+            {{ form_errors(form.password) }}
+            {{ form_rest(form) }}
+        </div>
+    </div>
+
+    <div class="text-center btn-container">
+        <button class="btn btn-primary"><i class="fa fa-edit fa-lg" aria-hidden="true"></i>{{ button|default('Créer')}}</button>
+    </div>
+
+{{ form_end(form) }}

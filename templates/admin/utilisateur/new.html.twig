@@ -1,0 +1,16 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Ajouter un utilisateur {{ parent() }}{% endblock %}
+
+{% block titrePage %}Ajouter un utilisateur{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ path('admin.utilisateur.index') }}">Utilisateurs</a></li>
+<li class="breadcrumb-item">Ajouter un utilisateur</li>
+{% endblock %}
+
+{% block body %}
+<div class="content-section p-3">
+    {{ include('admin/utilisateur/_form.html.twig', {form: form, button:'Ajouter un utilisateur'}) }}
+</div>
+{% endblock %}

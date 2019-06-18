@@ -1,0 +1,79 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Listing des parking {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-4">Listing des parking</h1>
+
+<button class="text-right mb-4 btn btn-primary" data-toggle="collapse" data-target="#demo">Ajouter une remorque</button>
+
+<div id="demo" class="collapse">
+Lorem ipsum dolor text....
+</div>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
+    </li>
+    {% for parking in parkings %}
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#menu{{ parking.id }}">{{ parking.denomination }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content content-section mb-4">
+    <div id="home" class="container tab-pane active">
+        <table class="table" id="tableSearch">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Remorque</th>
+                    <th>Parking</th>
+                    <th>Date mise en parking</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for parking in parkings %}
+                {% for remorque in parking.operations %}
+                <tr>
+                    <td>{{ loop.index0 }}</td>
+                    <td>{{ remorque.remorque.remorque }}</td>
+                    <td>{{ parking.denomination }}</td>
+                    <td>{{ remorque.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
+                    <td><a href="{{ path('admin.remorque.editer', {id: remorque.remorque.id}) }}">Modification</a></td>
+                </tr>
+                {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% for parking in parkings %}
+    <div id="menu{{ parking.id }}" class="container tab-pane fade">
+        <table class="table tableSearch">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Remorque</th>
+                    <th>Date mise en parking</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for remorque in parking.operations %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ remorque.remorque.remorque }}</td>
+                    <td>{{ remorque.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
+                    <td><a href="{{ path('admin.remorque.editer', {id: remorque.remorque.id}) }}">Modification</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

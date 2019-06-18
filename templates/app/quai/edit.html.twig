@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Edition du quais numéro : {{ quai.numero }} {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-4">Edition du quais numéro : {{ quai.numero }}</h1>
+
+<div class="content-section mb-4 p-4">
+    {{ form_start(form) }}
+    {{ form_rest(form) }}
+    <div class="text-center btn-container">
+        <button class="btn"><i class="fa fa-edit fa-lg" aria-hidden="true"></i>{{ button|default('Créer')}}</button>
+    </div>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

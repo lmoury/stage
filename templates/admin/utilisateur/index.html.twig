@@ -1,0 +1,60 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Listing des utilisateurs {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="/assets/plugins/dataTable/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block titrePage %}Listing des utilisateurs{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">Utilisateurs</li>
+{% endblock %}
+
+{% block body %}
+
+<div class="clearfix">
+    <a href="{{ path('admin.utilisateur.new') }}" class="btn btn-primary mb-3 float-right">Ajouter un utilisateur</a>
+</div>
+
+<div class="content-section p-4">
+    <table class="table table-bordered table-responsive text-center" id="tableUsers">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Rôle</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.nom }}</td>
+                <td>{{ user.prenom }}</td>
+                <td>{{ user.roleType }}</td>
+                <td><a class="btn btn-primary" href="{{ path('admin.utilisateur.editer', {id: user.id}) }}">Modification</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="/assets/plugins/dataTable/js/jquery.dataTables.min.js"></script>
+<script src="/assets/plugins/dataTable/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#tableUsers').DataTable();
+} );
+</script>
+{% endblock %}

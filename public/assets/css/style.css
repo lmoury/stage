@@ -1,0 +1,117 @@
+body {
+	background: rgb(230,230,230);
+}
+.content-section {
+	background-color: rgb(245,245,245);
+	box-shadow: 0px 5px 10px rgba(0,0,0,0.4);
+	border-top: solid rgb(251, 186, 0);
+}
+.navbar.navbar-expand-lg {
+	background: rgb(251, 186, 0);
+}
+
+/* ---------------------------------------------------
+    FOOTER
+----------------------------------------------------- */
+footer {
+    background: rgb(251, 186, 0);
+    padding: 15px;
+    color: #edf6fd;
+}
+footer a {
+    color: #dd8d38;
+    text-shadow: 1px 1px 0px black;
+}
+footer a:hover {
+    color: rgba(221, 141, 56,0.6);
+}
+/* ---------------------------------------------------
+    bouton retourner en haut
+----------------------------------------------------- */
+a#lm_btn-Retour {
+    cursor: pointer;
+    font-size: 15px;
+    z-index: 9999;
+    position: fixed;
+    height: 40px;
+    width: 40px;
+    bottom: 15px;
+    right: 20px;
+    display: none;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #d2d2d2;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color:  rgba(37,119,177,.75);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+a#lm_btn-Retour i {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 38px;
+}
+a#lm_btn-Retour i:hover {
+    color: rgb(255, 255, 255);
+}
+a#lm_btn-Retour:hover {
+    background-color: #2f78a0;
+    box-shadow: 0px 1px 6px rgba(0,0,0,0.12), 0px 1px 4px rgba(0,0,0,0.24);
+}
+/* ---------------------------------------------------
+    etat des quais
+----------------------------------------------------- */
+.etat0 {
+	background-color: green;
+}
+.etat1 {
+	background-color: orange;
+}
+.etat2 {
+	background-color: red;
+}
+.etat3 {
+	background-color: yellow;
+}
+/* ---------------------------------------------------
+    etat des quais
+----------------------------------------------------- */
+.ligne {
+	display: inline-flex;
+}
+.ligne .couleur {
+	display: inline-flex;
+	color: rgb(230,230,230);
+	text-shadow: 1px 1px 0px black;
+}
+.ligne div {
+	padding: 6px 9px;
+	margin: 20px 10px;
+}
+
+legend {
+	width: auto;
+	margin-left: 20px;
+}
+fieldset {
+	margin-bottom: 20px;
+	border: 1px solid;
+	padding: 10px 10px 20px 10px;
+}
+
+
+.dataTables_wrapper, .tableSearch_filter{
+	padding: 20px 20px 6px 20px;
+}
+
+#tableSearch_info, #tableSearch_paginate {
+	padding: 20px;
+}
+.dataTables_info, .dataTables_paginate {
+	padding: 20px;
+}

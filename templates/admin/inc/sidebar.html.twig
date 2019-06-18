@@ -1,0 +1,51 @@
+<!-- Sidebar  -->
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <img src="/assets/img/dachser_logo.svg" alt="Dachser"/>
+    </div>
+
+    <ul class="list-unstyled components">
+        <p class="text-center">
+            {{ app.user.prenom }} {{ app.user.nom }}
+            <br/>
+            {{ app.user.roleType }}
+        </p>
+        <li class="{% if current_url is defined and current_url == 'home' %}active{% endif %}">
+            <a href="{{ path('admin') }}">Home</a>
+        </li>
+        <li class="{% if current_url is defined and current_url == 'remorque' %}active{% endif %}">
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Remorques</a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+                <li>
+                    <a href="{{ path('admin.remorque.index') }}">Liste des remorques</a>
+                </li>
+                <li>
+                    <a href="{{ path('admin.remorque.new') }}">Ajouter une remorque</a>
+                </li>
+            </ul>
+        </li>
+        <li class="{% if current_url is defined and current_url == 'user' %}active{% endif %}">
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Utilisateurs</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+                <li class="active">
+                    <a href="{{ path('admin.utilisateur.index') }}">Liste des utilisateurs</a>
+                </li>
+                <li>
+                    <a href="{{ path('admin.utilisateur.new') }}">Ajouter un utilisateur</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Contact</a>
+        </li>
+    </ul>
+
+    <ul class="list-unstyled CTAs">
+        <li>
+            <a href="{{ path('/') }}" class="download">Retour à l'index</a>
+        </li>
+        <li>
+            <a href="{{ path('logout') }}" class="article btn btn-danger">Déconnexion</a>
+        </li>
+    </ul>
+</nav>

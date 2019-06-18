@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}| Lmoury{% endblock %}</title>
+        {% block stylesheets %}
+            <!-- css -->
+            <link rel="stylesheet" type="text/css" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+            <link rel="stylesheet" href="/assets/plugins/dataTable/css/dataTables.bootstrap4.min.css">
+            <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+            <!-- Font -->
+            <link rel="stylesheet" type="text/css" media="all" href="/assets/css/font-awesome.css"/>
+        {% endblock %}
+    </head>
+    <body>
+        {{ include("inc/navbar.html.twig") }}
+
+        <div class="container" id="container">
+            {% block body %}{% endblock %}
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        {{ include("inc/footer.html.twig") }}
+
+        {% block javascripts %}
+            <!-- javascript -->
+            <script src="/assets/js/jquery.min.js"></script>
+            <script src="/assets/js/popper.min.js"></script>
+            <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+            <script src="/assets/plugins/dataTable/js/jquery.dataTables.min.js"></script>
+            <script src="/assets/plugins/dataTable/js/dataTables.bootstrap4.min.js"></script>
+            <script>
+            $(document).ready(function() {
+                $('#tableSearch').DataTable({
+                    "iDisplayLength": 250
+                });
+                $('.tableSearch').DataTable({
+                    "iDisplayLength": 250
+                });
+            } );
+            function addParking(id) {
+                event.preventDefault()
+                let url = "{{ (path('quai.create', {id: 'ReplaceMeWithCorrectValue'})) }}";
+
+                url = url.replace("ReplaceMeWithCorrectValue", id);
+                $('#exampleModal').on('shown.bs.modal', function () {
+                    var modal = $(this);
+                    $.ajax({
+                        url: url,
+                        success: function(data) {
+                            modal.find('.modal-content').html(data);
+                        }
+                    });
+                });
+            }
+            </script>
+       {% endblock %}
+
+    </body>
+</html>

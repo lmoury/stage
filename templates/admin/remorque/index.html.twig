@@ -1,0 +1,58 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Listing des remorques {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="/assets/plugins/dataTable/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block titrePage %}Listing des remorques{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">Remorques</li>
+{% endblock %}
+
+{% block body %}
+
+<div class="clearfix">
+    <a href="{{ path('admin.remorque.new') }}" class="btn btn-primary mb-3 float-right">Ajouter une remorque</a>
+</div>
+
+<div class="content-section p-4">
+    <table class="table table-bordered table-responsive text-center" id="tableUsers">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Remorque</th>
+                <th>Immatriculation</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for remorque in remorques %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ remorque.remorque }}</td>
+                <td>{{ remorque.immatriculation }}</td>
+                <td>{{ remorque.remorqueType}}</td>
+                <td><a class="btn btn-primary" href="{{ path('admin.remorque.editer', {id: remorque.id}) }}">Modification</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="/assets/plugins/dataTable/js/jquery.dataTables.min.js"></script>
+<script src="/assets/plugins/dataTable/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#tableUsers').DataTable();
+} );
+</script>
+{% endblock %}

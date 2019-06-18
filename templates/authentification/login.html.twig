@@ -1,0 +1,53 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Connexion {{ parent() }}{% endblock %}
+
+{% block body %}
+
+<h1 class="p-title-value text-center">Se connecter</h1>
+
+{% if error %}
+<div class="alert alert-danger">
+    <i class="fa fa-warning"></i> <strong> Erreur !!!</strong> {{ error.messagekey | trans(error.messagedata, 'security') }}
+</div>
+{% endif %}
+
+<div class="content-section">
+    <form action="{{ path('login') }}" method="post">
+        <div class="block-container">
+            <dl class="formRow formRow-input">
+                <dt>
+                    <label for="username">Votre nom : </label>
+                </dt>
+                <dd>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="_username" id="username"  placeholder="Entrer votre nom" required autofocus />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-user fa-lg" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+
+            <dl class="formRow formRow-input">
+                <dt>
+                    <label for="password">Mot de passe : </label>
+                </dt>
+                <dd>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" name="_password" id="password"  placeholder="Entrer votre mot de passe" required />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+
+            <div class="text-center btn-container">
+                <button class="btn" type="submit"><i class="fa fa-lock fa-lg" aria-hidden="true"></i> Se connecter</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+{% endblock %}

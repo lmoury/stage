@@ -1,0 +1,76 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Plan des quais {{ parent() }}{% endblock %}
+
+{% block body %}
+<div id="legende">
+    <div class="ligne">
+        <div> Légende : </div>
+        <div class="couleur etat0"> Libre </div>
+        <div class="couleur etat1"> En maintenance </div>
+        <div class="couleur etat2"> Occupé </div>
+        <div class="couleur etat3"> Remorque à deplacer </div>
+    </div>
+</div>
+
+<div class="tab-content content-section mb-4">
+    <table border="1" style="font-size: 10px; width: 100%">
+        <tr style="height: 100px">
+                <td class="text-center" colspan="55">Parking 4</td>
+        </tr>
+        <tr>
+            {% for i in 254..244 %}
+                <td style="width: 10px; background: yellow">{{ i }}</td>
+            {% endfor %}
+            <td style="width: 20px; background: blue"></td>
+            {% for i in 242..232 %}
+                <td style="width: 10px; background: yellow">{{ i }}</td>
+            {% endfor %}
+            <td style="width: 20px; background: blue"></td>
+            {% for i in 230..222 %}
+                <td style="width: 10px; background: yellow">{{ i }}</td>
+            {% endfor %}
+            <td style="width: 20px; background: blue"></td>
+            {% for i in 220..213 %}
+                <td style="width: 10px; background: yellow">{{ i }}</td>
+            {% endfor %}
+            <td style="width: 20px; background: blue"></td>
+            {% for i in 211..201 %}
+                <td style="width: 10px; background: yellow">{{ i }}</td>
+            {% endfor %}
+        </tr>
+        <tr style="height: 100px">
+
+                <td colspan="59" style="background: blue"></td>
+
+        </tr>
+        <tr>
+            {% for quai in quais if quai.numero >= 144 and quai.numero <= 154 %}
+                <td class="{% if quai.operation %}etat{{ quai.operation.operation }}{% elseif quai.maintenance %}etat1{% else %}etat0{% endif %}" style="width: 10px">{{ quai.numero }}</td>
+            {% endfor %}
+            <td style="width: 20px; background: blue"></td>
+            {% for quai in quais if quai.numero >= 139 and quai.numero <= 142 %}
+                <td class="{% if quai.operation %}etat{{ quai.operation.operation }}{% elseif quai.maintenance %}etat1{% else %}etat0{% endif %}" style="width: 10px">{{ quai.numero }}</td>
+            {% endfor %}
+            <td colspan="7" style="width: 20px; background: blue"></td>
+            <td style="width: 20px; background: blue"></td>
+            {% for quai in quais if quai.numero >= 123 and quai.numero <= 130 %}
+                <td class="{% if quai.operation %}etat{{ quai.operation.operation }}{% elseif quai.maintenance %}etat1{% else %}etat0{% endif %}" style="width: 10px">{{ quai.numero }}</td>
+            {% endfor %}
+            <td style="width: 20px; background: blue"></td>
+            {% for quai in quais if quai.numero >= 113 and quai.numero <= 121 %}
+                <td class="{% if quai.operation %}etat{{ quai.operation.operation }}{% elseif quai.maintenance %}etat1{% else %}etat0{% endif %}" style="width: 10px">{{ quai.numero }}</td>
+            {% endfor %}
+            <td style="width: 20px; background: blue"></td>
+            {% for quai in quais if quai.numero >= 101 and quai.numero <= 111 %}
+                <td class="{% if quai.operation %}etat{{ quai.operation.operation }}{% elseif quai.maintenance %}etat1{% else %}etat0{% endif %}" style="width: 10px;">{{ quai.numero }}</td>
+            {% endfor %}
+        </tr>
+        <tr style="height: 100px">
+                <td class="text-center" colspan="16">Parking 2</td>
+                <td class="text-center" colspan="7" style="background: blue">Entrée</td>
+                <td class="text-center" colspan="31">Parking 1</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

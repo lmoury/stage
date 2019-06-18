@@ -1,0 +1,45 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Modification de {{ remorque.remorque }} {{ parent() }}{% endblock %}
+
+{% block titrePage %}Modification de {{ remorque.remorque }}{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ path('admin.remorque.index') }}">Remorques</a></li>
+<li class="breadcrumb-item">Modification de {{ remorque.remorque }}</li>
+{% endblock %}
+
+{% block body %}
+
+<div class="clearfix">
+    Remorque créé {{ date_passed(remorque.dateCreation | date('d M Y H:i:s')) }}
+    {% if remorque.dateCreation != remorque.dateEdition %}
+        , Edité pour la dernière fois {{ date_passed(remorque.dateEdition | date('d M Y H:i:s')) }}
+    {% endif %}
+    <a href="#" class="btn btn-danger mb-3 float-right" data-title="Delete" data-toggle="modal" data-target="#delete" ><i class="fa fa-trash"></i> Supprimer la remorque</a>
+</div>
+
+<!-- formulaire utilisateur -->
+<div class="content-section mb-4 p-4">
+    {{ include('admin/remorque/_form.html.twig', {form: form, button:'Modifier la remorque'}) }}
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Veuillez confirmer la suppression ?</div>
+            </div>
+            <div class="modal-footer">
+            <form method="post" action="{{ path('admin.remorque.delete', {id: remorque.id})}}">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ remorque.id) }}">
+                <button class="btn btn-danger">Supprimer</button>
+            </form>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Non</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

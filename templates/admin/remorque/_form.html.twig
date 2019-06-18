@@ -1,0 +1,32 @@
+{{ form_start(form) }}
+    <div class="mb-2 clearfix">
+        <div class="float-right">
+        {{ form_widget(form.maintenance) }}
+        {{ form_errors(form.maintenance) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <label for="miniature">Nom de la remorque : </label>
+            {{ form_widget(form.remorque, { 'attr': {'placeholder': 'Entrer le nom de la remorque'} }) }}
+            {{ form_errors(form.remorque) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="miniature">Immatriculation : </label>
+            {{ form_widget(form.immatriculation, { 'attr': {'placeholder': 'Entrer l\'immatriculation'} }) }}
+            {{ form_errors(form.immatriculation) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="miniature">Type : </label>
+            {{ form_widget(form.type, { 'attr': {'placeholder': 'Entrer le type'} }) }}
+            {{ form_errors(form.type) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    <div class="text-center btn-container">
+        <button class="btn btn-primary"><i class="fa fa-edit fa-lg" aria-hidden="true"></i>{{ button|default('Créer')}}</button>
+    </div>
+
+{{ form_end(form) }}

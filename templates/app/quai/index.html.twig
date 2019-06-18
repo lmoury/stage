@@ -1,0 +1,100 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Listing des quais {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-4">Listing des Quais</h1>
+
+{{ form_start(form) }}
+<fieldset>
+    <legend>Ajouter une remorque à un quai</legend>
+<div class="row">
+        <div class="col-md-5">
+            {{ form_widget(form.quai) }}
+            {{ form_errors(form.quai) }}
+        </div>
+        <div class="col-md-5">
+            {{ form_widget(form.remorque) }}
+            {{ form_errors(form.remorque) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_rest(form) }}
+            <div class="text-center btn-container">
+                <button class="btn btn-primary"><i class="fa fa-edit fa-lg"></i>{{ button|default('Ajouter')}}</button>
+            </div>
+        </div>
+
+</div>
+</fieldset>
+{{ form_end(form) }}
+
+<div class="content-section mb-4">
+    <a href="" class="float-right m-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
+    <div id="legende">
+        <div class="ligne">
+            <div> Légende : </div>
+            <div class="couleur etat0"> Libre </div>
+            <div class="couleur etat1"> En maintenance </div>
+            <div class="couleur etat2"> Occupé </div>
+            <div class="couleur etat3"> Remorque à deplacer </div>
+        </div>
+    </div>
+    <table class="table" id="tableSearch">
+        <thead>
+            <tr>
+                <th>Quai</th>
+                <th>Operation</th>
+                <th>Remorque</th>
+                <th>Date de mise à quai</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for quai in quais %}
+            <tr class="{% if quai.operation %}etat{{ quai.operation.operation }}{% elseif quai.maintenance %}etat1{% else %}etat0{% endif %}">
+                <td>{{ quai.numero }}</td>
+                <td>{% if quai.operation %}{{ quai.operation.operationType }}{% elseif quai.maintenance %}En maitenance{% else %}Libre{% endif %}</td>
+                <td>
+                    {% if quai.operation %}
+                    <a href="#" data-title="Remorque" data-toggle="modal" data-target="#remorque{{ quai.operation.remorque.id }}" >
+                        {{ quai.operation.remorque.immatriculation }}
+                    </a>
+                    <div class="modal fade" id="remorque{{ quai.operation.remorque.id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div><span>Remorque : </span><span>{{ quai.operation.remorque.remorque }}</span></div>
+                                    <div><span>Immatriculation : </span><span>{{ quai.operation.remorque.immatriculation }}</span></div>
+                                    <div><span>Type : </span><span>{{ quai.operation.remorque.remorqueType }}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if quai.operation %}
+                        {{ quai.operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if quai.operation %}
+                        {% if quai.operation.operation == 2 %}
+                            <a class="btn btn-primary" href="{{ path('app.quai.deplacer', {id: quai.operation.id}) }}">Déplacer</a>
+                            <a class="btn btn-primary" href="{{ path('app.quai.edit', {id: quai.operation.id}) }}">Modifier</a>
+                        {% else %}
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="addParking({{ quai.operation.id }})">Parker</button>
+                        {% endif %}
+                    {% elseif quai.maintenance %}
+                        <a class="btn btn-primary" href="{{ path('app.quai.maintenance', {id: quai.id}) }}">Réactiver le quai</a>
+                    {% else %}
+                        <a class="btn btn-primary" href="{{ path('app.quai.maintenance', {id: quai.id}) }}">Mettre en maintenance</a>
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
