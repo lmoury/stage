@@ -29,7 +29,7 @@ class RemorqueController extends AbstractController
      */
     public function index(RemorqueRepository $repoRemorque)
     {
-        $remorques = $repoRemorque->findAll();
+        $remorques = $repoRemorque->getRemorques();
         return $this->render('app/remorque/index.html.twig', [
             'current_url' => $this->current_url,
             'remorques' => $remorques,

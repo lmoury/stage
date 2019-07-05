@@ -29,6 +29,8 @@ class QuaiRepository extends ServiceEntityRepository
             ->leftJoin('q.operation', 'o')
             ->addSelect('o', 'r')
             ->leftJoin('o.remorque', 'r')
+            ->addSelect('r', 't')
+            ->leftJoin('r.type', 't')
             ->addSelect('r', 'op')
             ->leftJoin('r.operation', 'op')
             ->orderBy('q.numero', 'DESC')

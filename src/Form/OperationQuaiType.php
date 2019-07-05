@@ -3,9 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Operation;
-use App\Entity\Quai;
 use App\Entity\Remorque;
-use App\Repository\QuaiRepository;
+use App\Repository\RemorqueRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,13 +17,8 @@ class OperationQuaiType extends AbstractType
         $builder
             ->add('remorque', EntityType::class, [
                 'class' => Remorque::class,
-                'choice_label' => 'remorque'
-            ])
-            ->add('quai', EntityType::class, [
-                'label' => 'select some colors',
-                'class' => Quai::class,
-                'choice_label' => 'numero',
-                'query_builder' => function (QuaiRepository $qr) {
+                'choice_label' => 'remorque',
+                'query_builder' => function (RemorqueRepository $qr) {
                     return $qr->createQueryBuilder('q')
                     ->andWhere('q.maintenance = false');
                 }

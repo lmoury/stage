@@ -8,6 +8,7 @@
             <link rel="stylesheet" type="text/css" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
             <link rel="stylesheet" href="/assets/plugins/dataTable/css/dataTables.bootstrap4.min.css">
             <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+            <link rel="stylesheet" type="text/css" href="/assets/css/styleOperation.css">
             <!-- Font -->
             <link rel="stylesheet" type="text/css" media="all" href="/assets/css/font-awesome.css"/>
         {% endblock %}
@@ -16,6 +17,11 @@
         {{ include("inc/navbar.html.twig") }}
 
         <div class="container" id="container">
+            {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                <i class="fa fa-check"></i> <strong> Success !!!</strong> {{ message | raw }}
+            </div>
+            {% endfor %}
             {% block body %}{% endblock %}
         </div>
         <!-- Modal -->
@@ -43,21 +49,20 @@
                     "iDisplayLength": 250
                 });
             } );
-            function addParking(id) {
-                event.preventDefault()
-                let url = "{{ (path('quai.create', {id: 'ReplaceMeWithCorrectValue'})) }}";
-
-                url = url.replace("ReplaceMeWithCorrectValue", id);
-                $('#exampleModal').on('shown.bs.modal', function () {
-                    var modal = $(this);
-                    $.ajax({
-                        url: url,
-                        success: function(data) {
-                            modal.find('.modal-content').html(data);
-                        }
-                    });
+            $('#exampleModal').on('shown.bs.modal', function (event) {
+                  const button = $(event.relatedTarget);
+                  const idQuai = button.attr('data-operation-id');
+                  let url = "{{ (path('parking.parquer', {id: 'ReplaceMeWithCorrectValue'})) }}";
+                  url = url.replace("ReplaceMeWithCorrectValue", idQuai);
+                var modal = $(this);
+                $.ajax({
+                    url: url,
+                    success: function(data) {
+                        console.log('AJAX');
+                        modal.find('.modal-content').html(data);
+                    }
                 });
-            }
+            });
             </script>
        {% endblock %}
 

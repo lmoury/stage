@@ -19,22 +19,25 @@ class RemorqueRepository extends ServiceEntityRepository
         parent::__construct($registry, Remorque::class);
     }
 
-    // /**
-    //  * @return Remorque[] Returns an array of Remorque objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+    * @return Remorque[] Returns an array of Remorque objects
+    */
+    public function getRemorques()
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
+            ->addSelect('r', 't')
+            ->leftJoin('r.type', 't')
+            ->addSelect('r', 'o')
+            ->leftJoin('r.operation', 'o')
+            ->addSelect('o', 'p')
+            ->leftJoin('o.parking', 'p')
+            ->addSelect('o', 'q')
+            ->leftJoin('o.quai', 'q')            
             ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Remorque

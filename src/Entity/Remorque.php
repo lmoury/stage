@@ -38,12 +38,6 @@ class Remorque
     private $immatriculation;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank(message="Ce champ ne peut pas être vide")
-     */
-    private $type;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $date_creation;
@@ -62,6 +56,12 @@ class Remorque
      * @ORM\OneToOne(targetEntity="App\Entity\Operation", mappedBy="remorque", cascade={"persist", "remove"})
      */
     private $operation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\RemorqueType", inversedBy="remorques")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type;
 
 
     public function __construct() {
@@ -86,10 +86,6 @@ class Remorque
         return $this;
     }
 
-    public function getRemorqueType() {
-        return self::REMORQUETYPE[$this->type];
-    }
-
     public function getImmatriculation(): ?string
     {
         return $this->immatriculation;
@@ -98,18 +94,6 @@ class Remorque
     public function setImmatriculation(string $immatriculation): self
     {
         $this->immatriculation = $immatriculation;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }
@@ -163,6 +147,18 @@ class Remorque
         if ($this !== $operation->getRemorque()) {
             $operation->setRemorque($this);
         }
+
+        return $this;
+    }
+
+    public function getType(): ?RemorqueType
+    {
+        return $this->type;
+    }
+
+    public function setType(?RemorqueType $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

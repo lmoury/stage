@@ -1,0 +1,127 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Listing des parkings {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="/assets/plugins/dataTable/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block titrePage %}Listing des parkings{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">Parking</li>
+{% endblock %}
+
+{% block body %}
+<div class="clearfix">
+    <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalNewParking">Ajouter</button>
+</div>
+
+<div class="content-section">
+    <table class="table table-bordered table-responsive text-center" id="tableSearch">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Parking</th>
+                <th>Nb remorques</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for parking in parkings %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>
+                    <a class="text-right mb-4" href="#" data-toggle="collapse" data-target="#demo{{ parking.id }}">{{ parking.denomination }}</a>
+                    <div id="demo{{ parking.id }}" class="collapse">
+                        {% for operation in parking.operations %}
+                            <div><a href="{{ path('admin.remorque.editer', {id: operation.remorque.id}) }}">{{ operation.remorque.remorque }}</a></div>
+                        {% endfor %}
+                    </div>
+
+                </td>
+                <td>{{ parking.operations.count }}</td>
+                <td>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalParking" data-parking-id="{{ parking.id }}">Modifier</button>
+                    {% if parking.operations.count == 0 %}
+                    <a href="#" class="btn btn-primary" data-title="Delete" data-toggle="modal" data-target="#deleteParking{{ parking.id }}">Supprimer</a>
+                    <!-- modal suppression parking -->
+                    <div class="modal fade" id="deleteParking{{ parking.id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Veuillez confirmer la suppression ?</div>
+                                </div>
+                                <div class="modal-footer">
+                                <form method="post" action="{{ path('admin.parking.delete', {id: parking.id})}}">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger">Supprimer</button>
+                                </form>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Non</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- Modal ajouter un parking -->
+<div class="modal fade" id="modalNewParking" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalTitle">
+                    Ajouter un parking :
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ include("admin/parking/_form.html.twig", {form: form, button:'Ajouter'}) }}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal modifier parking -->
+<div class="modal fade" id="modalParking" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalTitle">
+                    Modifier le parking :
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $('#modalParking').on('shown.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const idParking = button.attr('data-parking-id');
+        let url = "{{ (path('admin.parking.editer', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        url = url.replace("ReplaceMeWithCorrectValue", idParking);
+        var modal = $(this);
+        $.ajax({
+            url: url,
+            success: function(data) {
+                modal.find('.modal-body').html(data);
+            }
+        });
+    });
+    </script>
+{% endblock %}

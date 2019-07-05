@@ -108,20 +108,22 @@ a:focus {
     display: block;
 }
 
-#sidebar ul li a:hover {
+#sidebar ul li a:hover,
+a[aria-expanded="true"] {
     color: rgb(11, 61, 145);
     background: #fff;
+    color: #fff;
+    background: rgb(251, 186, 0);
 }
 
-#sidebar ul li.active>a,
-a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
+#sidebar ul li.active>a {
+    color: rgb(11, 61, 145);
+    background: #fff;
 }
 
 #sidebar ul#pageSubmenu li.active > a {
     color: rgb(11, 61, 145);
-    background: #fff;
+    background: rgb(232, 232, 232);
 }
 
 a[data-toggle="collapse"] {
@@ -139,7 +141,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    background: rgb(15, 74, 173);
 }
 
 ul.CTAs {
@@ -166,8 +168,11 @@ a.download {
 ----------------------------------------------------- */
 #content {
     width: 100%;
-    min-height: 100vh;
     transition: all 0.3s;
+}
+
+#content .container {
+    min-height: 70vh;
 }
 
 /* ---------------------------------------------------

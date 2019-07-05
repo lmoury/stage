@@ -14,24 +14,49 @@
             <a href="{{ path('admin') }}">Home</a>
         </li>
         <li class="{% if current_url is defined and current_url == 'remorque' %}active{% endif %}">
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Remorques</a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
+            <a href="#remorqueSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Remorques</a>
+            <ul class="collapse list-unstyled" id="remorqueSubmenu">
                 <li>
                     <a href="{{ path('admin.remorque.index') }}">Liste des remorques</a>
                 </li>
                 <li>
                     <a href="{{ path('admin.remorque.new') }}">Ajouter une remorque</a>
                 </li>
+                <li>
+                    <a href="{{ path('admin.remorque.type.index') }}">Type de remorque</a>
+                </li>
             </ul>
         </li>
         <li class="{% if current_url is defined and current_url == 'user' %}active{% endif %}">
-            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Utilisateurs</a>
-            <ul class="collapse list-unstyled" id="pageSubmenu">
-                <li class="active">
+            <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Utilisateurs</a>
+            <ul class="collapse list-unstyled" id="userSubmenu">
+                <li>
                     <a href="{{ path('admin.utilisateur.index') }}">Liste des utilisateurs</a>
                 </li>
                 <li>
                     <a href="{{ path('admin.utilisateur.new') }}">Ajouter un utilisateur</a>
+                </li>
+            </ul>
+        </li>
+        <li class="{% if current_url is defined and current_url == 'quai' %}active{% endif %}">
+            <a href="#quaiSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Quais</a>
+            <ul class="collapse list-unstyled" id="quaiSubmenu">
+                <li>
+                    <a href="{{ path('admin.quai.index') }}">Liste des quais</a>
+                </li>
+                <li>
+                    <a href="{{ path('admin.utilisateur.new') }}">Historique des quais</a>
+                </li>
+            </ul>
+        </li>
+        <li class="{% if current_url is defined and current_url == 'parking' %}active{% endif %}">
+            <a href="#parkingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Parkings</a>
+            <ul class="collapse list-unstyled" id="parkingSubmenu">
+                <li>
+                    <a href="{{ path('admin.parking.index') }}">Liste des parking</a>
+                </li>
+                <li>
+                    <a href="{{ path('admin.utilisateur.new') }}">Historique des parkings</a>
                 </li>
             </ul>
         </li>

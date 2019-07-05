@@ -29,6 +29,8 @@ class ParkingRepository extends ServiceEntityRepository
             ->leftJoin('p.operations', 'o')
             ->addSelect('o', 'r')
             ->leftJoin('o.remorque', 'r')
+            ->addSelect('r', 't')
+            ->leftJoin('r.type', 't')
             ->orderBy('p.id', 'ASC')
             ->getQuery()
             ->getResult()

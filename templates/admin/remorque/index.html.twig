@@ -16,10 +16,11 @@
 {% block body %}
 
 <div class="clearfix">
-    <a href="{{ path('admin.remorque.new') }}" class="btn btn-primary mb-3 float-right">Ajouter une remorque</a>
+    <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
+    <a href="{{ path('admin.remorque.new') }}" class="btn btn-primary mb-3">Ajouter</a>
 </div>
 
-<div class="content-section p-4">
+<div class="content-section">
     <table class="table table-bordered table-responsive text-center" id="tableUsers">
         <thead>
             <tr>
@@ -27,16 +28,32 @@
                 <th>Remorque</th>
                 <th>Immatriculation</th>
                 <th>Type</th>
+                <th>Operation</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             {% for remorque in remorques %}
-            <tr>
+            <tr class="{% if remorque.maintenance %}etat1{% endif %}">
                 <td>{{ loop.index }}</td>
                 <td>{{ remorque.remorque }}</td>
                 <td>{{ remorque.immatriculation }}</td>
-                <td>{{ remorque.remorqueType}}</td>
+                <td>{{ remorque.type.denomination }}</td>
+                <td>
+                    {% if remorque.operation %}
+                        {{ remorque.operation.operationType }}<br/>
+                        {% if remorque.operation.quai %}
+                            Quai numéro : <strong>{{ remorque.operation.quai.numero }}</strong><br/>
+                        {% elseif remorque.operation.parking %}
+                            Parking : <strong>{{ remorque.operation.parking.denomination}}</strong><br/>
+                        {% endif %}
+                        Le {{ remorque.operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}
+                    {% elseif remorque.maintenance %}
+                        En maintenance
+                    {% else %}
+                        Aucune opération
+                    {% endif %}
+                </td>
                 <td><a class="btn btn-primary" href="{{ path('admin.remorque.editer', {id: remorque.id}) }}">Modification</a></td>
             </tr>
             {% endfor %}

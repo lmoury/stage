@@ -1,11 +1,13 @@
 <div class="modal-header">
     <h5 class="modal-title" id="exampleModalTitle">
-        {% if operation.quai %}
-        Quai numéro : <strong>{{ operation.quai.numero }}</strong><br/>
-        {% else %}
-        Parking : <strong>{{ operation.parking.denomination }}</strong><br/>
-        {% endif %}
-        Remorque Immatriculation : <strong>{{ operation.remorque.immatriculation }}</strong>
+        Quai numéro :
+        <strong>
+            {% if quai is defined %}
+            {{ quai.numero }}
+            {% else %}
+            {{ operation.quai.numero }}
+            {% endif %}
+        </strong><br/>
     </h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -13,11 +15,11 @@
 </div>
 <div class="modal-body">
     {{ form_start(form) }}
-    <div class="mb-2">Veuillez choisir un parking :</div>
+    <div class="mb-2">Veuillez choisir une remorque :</div>
     <div class="row">
             <div class="col-md-9">
-                {{ form_widget(form.parking) }}
-                {{ form_errors(form.parking) }}
+                {{ form_widget(form.remorque) }}
+                {{ form_errors(form.remorque) }}
             </div>
             <div class="col-md-3">
                 {{ form_rest(form) }}
@@ -28,5 +30,4 @@
 
     </div>
     {{ form_end(form) }}
-
 </div>

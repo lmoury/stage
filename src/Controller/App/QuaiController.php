@@ -5,6 +5,7 @@ namespace App\Controller\App;
 use App\Entity\Quai;
 use App\Entity\Operation;
 use App\Repository\QuaiRepository;
+use App\Repository\OperationRepository;
 use App\Form\OperationQuaiType;
 use App\Form\OperationParkingType;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -29,31 +30,14 @@ class QuaiController extends AbstractController
 
     /**
      * @Route("/quai", name="quai")
-     * @Route("/quai/editer.{id}", name="app.quai.edit", methods="GET|POST")
      * @param QuaiRepository $repoQuai
      */
-    public function index(Request $request, Operation $operationQuai = null, QuaiRepository $repoQuai)
+    public function index(QuaiRepository $repoQuai)
     {
-        if(!$operationQuai) {
-            $operationQuai = new Operation();
-            $this->em->persist($operationQuai);
-        }
-
-        $form = $this->createForm(OperationQuaiType::class, $operationQuai);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $operationQuai->setOperation(2);
-            $this->em->flush();
-            $this->addFlash('success', 'La discussion a été supprimer avec success');
-            return $this->redirectToRoute('quai');
-        }
-
         $quais = $repoQuai->getQuais();
         return $this->render('app/quai/index.html.twig', [
             'current_url' => $this->current_url,
             'quais' => $quais,
-            'form' => $form->createView()
         ]);
     }
 
@@ -62,56 +46,77 @@ class QuaiController extends AbstractController
      * @param ObjectManager em
      * @param Operation $operation
      */
-    public function deplacer(Operation $operation)
+    public function terminer(Operation $operation)
     {
         $operation->setOperation(3);
         $this->em->flush();
+        $this->addFlash('success', 'Opération terminé sur le quai <strong>'.$operation->getQuai()->getNumero().'</strong>, la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> peux etre deplacé');
         return $this->redirectToRoute('quai');
     }
 
 
     /**
-     * @Route("/quai/maintenance.{id}", name="app.quai.maintenance", methods="GET|POST")
-     * @param ObjectManager em
+     * @Route("/quai/new.{id}", name="quai.new")
      * @param Quai $quai
      */
-    public function maintenance(Quai $quai)
+    public function newQuai(Request $request, Quai $quai, OperationRepository $repository)
     {
-        if($quai->getMaintenance()) {
-            $quai->setMaintenance(false);
+
+        $operation = new Operation();
+        $form = $this->createForm(OperationQuaiType::class, $operation, [
+            'action' => $this->generateUrl('quai.new', ['id' => $quai->getId()]),
+        ]);
+        $form->handleRequest($request);
+
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $operationRe = $repository->getSearchRemorque($request->request->get('operation_quai')['remorque']);
+            if($operationRe) {
+                $operationRe->setParking(NULL);
+                $operationRe->setOperation(2);
+                $operationRe->setQuai($quai);
+                $this->em->flush();
+            }
+            else {
+                $operation->setOperation(2);
+                $operation->setQuai($quai);
+                $this->em->persist($operation);
+                $this->em->flush();
+            }
+
+            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> a étais mise sur le quai <strong>'.$quai->getNumero().'</strong>');
+            return $this->redirectToRoute('quai');
         }
-        else {
-            $quai->setMaintenance(true);
-        }
-        $this->em->flush();
-        return $this->redirectToRoute('quai');
+
+        return $this->render('app/quai/_formQuai.html.twig', [
+            'form' => $form->createView(),
+            'quai' => $quai,
+
+        ]);
     }
 
     /**
-     * @Route("/quai/create.{id}", name="quai.create")
+     * @Route("/quai/modifier.{id}", name="quai.modifier")
      * @param Operation $operation
      */
-    public function create(Request $request, Operation $operation)
+    public function editerQuai(Request $request, Operation $operation)
     {
-
-        //$newOpe = $operation;
-        $form = $this->createForm(OperationParkingType::class, $operation, [
-            'action' => $this->generateUrl('quai.create', ['id' => $operation->getId()]),
+        $form = $this->createForm(OperationQuaiType::class, $operation, [
+            'action' => $this->generateUrl('quai.modifier', ['id' => $operation->getId()]),
         ]);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $operation->setOperation(4);
-            $operation->setQuai(NULL);
             $operation->setDateCreation(new \DateTime());
             $this->em->flush();
-            $this->addFlash('success', 'La discussion a été supprimer avec success');
+            $this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');
             return $this->redirectToRoute('quai');
         }
 
-        return $this->render('app/quai/_form.html.twig', [
+        return $this->render('app/quai/_formQuai.html.twig', [
             'form' => $form->createView(),
-            'operation' => $operation,
+            'operation' => $operation
+
 
         ]);
     }

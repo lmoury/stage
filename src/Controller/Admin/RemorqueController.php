@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Repository\RemorqueRepository;
 use App\Entity\Remorque;
-use App\Form\RemorqueType;
+use App\Form\RemorquesType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,6 +14,11 @@ class RemorqueController extends AbstractController
 {
 
     private $current_url = 'remorque';
+
+    /**
+     * @var ObjectManager
+     */
+    private $em;
 
     /**
      * @var RemorqueRepository
@@ -51,7 +56,7 @@ class RemorqueController extends AbstractController
    {
 
        $remorque = new Remorque();
-       $form = $this->createForm(RemorqueType::class, $remorque);
+       $form = $this->createForm(RemorquesType::class, $remorque);
        $form->handleRequest($request);
 
        if($form->isSubmitted() && $form->isValid()) {
@@ -75,7 +80,7 @@ class RemorqueController extends AbstractController
     public function editer(Remorque $remorque, Request $request)
     {
 
-        $form = $this->createForm(RemorqueType::class, $remorque);
+        $form = $this->createForm(RemorquesType::class, $remorque);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {

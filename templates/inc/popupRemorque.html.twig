@@ -1,0 +1,21 @@
+<div class="modal fade" id="remorque{{ id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalTitle">
+                    <strong>{{ remorque }}</strong><br/>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div><span>Immatriculation : </span><span>{{ immatriculation }}</span></div>
+                <div><span>Type : </span><span>{{ type }}</span></div>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ path('admin.remorque.editer', {id: id}) }}">Profil</a>
+            </div>
+        </div>
+    </div>
+</div>

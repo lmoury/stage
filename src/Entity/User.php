@@ -15,9 +15,10 @@ class User implements UserInterface,\Serializable
 {
 
     const ROLES = [
-            1=> 'ROLE_ADMIN',
-            2=> 'ROLE_MOD',
-            3=> 'ROLE_USER'
+            1=> 'ROLE_EMPLOYE',
+            2=> 'ROLE_QUAI',
+            3=> 'ROLE_PARKING',
+            4=> 'ROLE_SUPER_ADMIN'
     ];
 
 

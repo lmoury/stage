@@ -1,24 +1,24 @@
 {{ form_start(form) }}
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label for="miniature">Prenom : </label>
+            <label for="prenom">Prenom : </label>
             {{ form_widget(form.prenom, { 'attr': {'placeholder': 'Entrer le prenom'} }) }}
             {{ form_errors(form.prenom) }}
         </div>
         <div class="col-md-6 mb-3">
-            <label for="miniature">Nom : </label>
+            <label for="nom">Nom : </label>
             {{ form_widget(form.nom, { 'attr': {'placeholder': 'Entrer le nom'} }) }}
             {{ form_errors(form.nom) }}
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label for="miniature">Role : </label>
+            <label for="rolee">Role : </label>
             {{ form_widget(form.role, { 'attr': {'placeholder': 'Entrer le role'} }) }}
             {{ form_errors(form.role) }}
         </div>
         <div class="col-md-6 mb-3">
-            <label for="miniature">Username : </label>
+            <label for="login">Login : </label>
             {{ form_widget(form.username, { 'attr': {'placeholder': 'Entrer le username'} }) }}
             {{ form_errors(form.username) }}
         </div>

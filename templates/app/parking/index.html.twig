@@ -38,13 +38,18 @@ Lorem ipsum dolor text....
             </thead>
             <tbody>
                     {% for parking in parkings %}
-                {% for remorque in parking.operations %}
+                {% for operation in parking.operations %}
                 <tr>
-                    <td>{{ loop.index0 }}</td>
-                    <td>{{ remorque.remorque.remorque }}</td>
+                    <td>{{ loop.index }}</td>
+                    <td>
+                        <a href="#" data-title="Remorque" data-toggle="modal" data-target="#remorque{{ operation.remorque.id }}" >
+                            {{ operation.remorque.remorque }}
+                        </a>
+                        {{ include('inc/popupRemorque.html.twig', {id: operation.remorque.id, remorque: operation.remorque.remorque, immatriculation: operation.remorque.immatriculation, type: operation.remorque.type.denomination}) }}
+                    </td>
                     <td>{{ parking.denomination }}</td>
-                    <td>{{ remorque.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
-                    <td><a href="{{ path('admin.remorque.editer', {id: remorque.remorque.id}) }}">Modification</a></td>
+                    <td>{{ operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
+                    <td><button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-operation-id="{{ operation.id }}">Parquer</button></td>
                 </tr>
                 {% endfor %}
                 {% endfor %}
@@ -63,12 +68,17 @@ Lorem ipsum dolor text....
                 </tr>
             </thead>
             <tbody>
-                {% for remorque in parking.operations %}
+                {% for operation in parking.operations %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>{{ remorque.remorque.remorque }}</td>
-                    <td>{{ remorque.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
-                    <td><a href="{{ path('admin.remorque.editer', {id: remorque.remorque.id}) }}">Modification</a></td>
+                    <td>
+                        <a href="#" data-title="Remorque" data-toggle="modal" data-target="#remorque{{ operation.remorque.id }}" >
+                            {{ operation.remorque.remorque }}
+                        </a>
+                        {{ include('inc/popupRemorque.html.twig', {id: operation.remorque.id, remorque: operation.remorque.remorque, immatriculation: operation.remorque.immatriculation, type: operation.remorque.type.denomination}) }}
+                    </td>
+                    <td>{{ operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
+                    <td><button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-operation-id="{{ operation.id }}">Parquer</button></td>
                 </tr>
                 {% endfor %}
             </tbody>

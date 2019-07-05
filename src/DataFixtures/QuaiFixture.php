@@ -17,7 +17,6 @@ class QuaiFixture extends Fixture
             $quai = new Quai();
             $quai
                 ->setNumero($count)
-                ->setEtat(0)
                 ;
                 $manager->persist($quai);
         }
@@ -27,7 +26,6 @@ class QuaiFixture extends Fixture
             $quai = new Quai();
             $quai
                 ->setNumero($count)
-                ->setEtat(0)
                 ;
                 $manager->persist($quai);
         }
@@ -38,7 +36,6 @@ class QuaiFixture extends Fixture
             $quai = new Quai();
             $quai
                 ->setNumero($count)
-                ->setEtat(0)
                 ;
                 $manager->persist($quai);
         }
@@ -49,7 +46,6 @@ class QuaiFixture extends Fixture
             $quai = new Quai();
             $quai
                 ->setNumero($count)
-                ->setEtat(0)
                 ;
                 $manager->persist($quai);
         }
@@ -60,7 +56,56 @@ class QuaiFixture extends Fixture
             $quai = new Quai();
             $quai
                 ->setNumero($count)
-                ->setEtat(0)
+                ;
+                $manager->persist($quai);
+        }
+
+        $count= 200;
+        for ($i=0; $i < 11 ; $i++) {
+            $count++;
+            $quai = new Quai();
+            $quai
+                ->setNumero($count)
+                ;
+                $manager->persist($quai);
+        }
+
+        $count= 212;
+        for ($i=0; $i < 8 ; $i++) {
+            $count++;
+            $quai = new Quai();
+            $quai
+                ->setNumero($count)
+                ;
+                $manager->persist($quai);
+        }
+
+        $count= 221;
+        for ($i=0; $i < 9 ; $i++) {
+            $count++;
+            $quai = new Quai();
+            $quai
+                ->setNumero($count)
+                ;
+                $manager->persist($quai);
+        }
+
+        $count= 231;
+        for ($i=0; $i < 11 ; $i++) {
+            $count++;
+            $quai = new Quai();
+            $quai
+                ->setNumero($count)
+                ;
+                $manager->persist($quai);
+        }
+
+        $count= 243;
+        for ($i=0; $i < 11 ; $i++) {
+            $count++;
+            $quai = new Quai();
+            $quai
+                ->setNumero($count)
                 ;
                 $manager->persist($quai);
         }

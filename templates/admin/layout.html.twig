@@ -9,6 +9,7 @@
             <!-- css -->
             <link rel="stylesheet" type="text/css" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="/assets/admin/css/style.css">
+            <link rel="stylesheet" type="text/css" href="/assets/css/styleOperation.css">
             <!-- Font -->
             <link rel="stylesheet" type="text/css" media="all" href="/assets/css/font-awesome.css"/>
         {% endblock %}
@@ -26,6 +27,11 @@
                     </ul>
                 </div>
                 <div class="container">
+                    {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        <i class="fa fa-check"></i> <strong> Success !!!</strong> {{ message }}
+                    </div>
+                    {% endfor %}
                     {% block body %}{% endblock %}
                 </div>
                 {{ include("inc/footer.html.twig") }}
@@ -37,6 +43,18 @@
             <script src="/assets/js/jquery.min.js"></script>
             <script src="/assets/js/popper.min.js"></script>
             <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+            <script src="/assets/plugins/dataTable/js/jquery.dataTables.min.js"></script>
+            <script src="/assets/plugins/dataTable/js/dataTables.bootstrap4.min.js"></script>
+            <script>
+            $(document).ready(function() {
+                $('#tableSearch').DataTable({
+                    "iDisplayLength": 25
+                });
+                $('.tableSearch').DataTable({
+                    "iDisplayLength": 25
+                });
+            } );
+            </script>
             <script type="text/javascript">
                 $(document).ready(function () {
                     $('#sidebarCollapse').on('click', function () {

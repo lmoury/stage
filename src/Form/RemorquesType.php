@@ -3,12 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Remorque;
+use App\Entity\RemorqueType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class RemorqueType extends AbstractType
+class RemorquesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -16,8 +18,9 @@ class RemorqueType extends AbstractType
             ->add('maintenance')
             ->add('remorque')
             ->add('immatriculation')
-            ->add('type', ChoiceType::class, [
-                'choices' => $this->getChoices()
+            ->add('type', EntityType::class, [
+                'class' => RemorqueType::class,
+                'choice_label' => 'denomination'
             ])
         ;
     }
@@ -27,14 +30,5 @@ class RemorqueType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Remorque::class,
         ]);
-    }
-
-    public function getChoices() {
-        $choices = Remorque::REMORQUETYPE;
-        $output = [];
-        foreach ($choices as $k => $v) {
-            $output[$v] = $k;
-        }
-        return $output;
     }
 }

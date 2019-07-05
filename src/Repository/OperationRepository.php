@@ -19,18 +19,18 @@ class OperationRepository extends ServiceEntityRepository
         parent::__construct($registry, Operation::class);
     }
 
-    // /**
-    // * @return Operation[] Returns an array of Operation objects
-    // */
-    // public function getParkings()
-    // {
-    //     return $this->createQueryBuilder('o')
-    //         ->andWhere('o.parking is not null')
-    //         ->orderBy('o.id', 'ASC')
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
+    /**
+    * @return Operation Return one Operation objects
+    */
+    public function getSearchRemorque($value)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.remorque = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Operation

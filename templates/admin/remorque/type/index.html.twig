@@ -1,0 +1,115 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %} Listing des types de remorque {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="/assets/plugins/dataTable/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block titrePage %}Listing des types de remorque{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">Type de remorque</li>
+{% endblock %}
+
+{% block body %}
+<div class="clearfix">
+    <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalNewType">Ajouter</button>
+</div>
+
+<div class="content-section">
+    <table class="table table-bordered table-responsive text-center" id="tableSearch">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for type in remorqueTypes %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ type.denomination }}</td>
+                <td>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalType" data-type-id="{{ type.id }}">Modifier</button>
+                    <a href="#" class="btn btn-primary" data-title="Delete" data-toggle="modal" data-target="#deleteTypeRemorque{{ type.id }}">Supprimer</a>
+                    <!-- modal suppression type remorque -->
+                    <div class="modal fade" id="deleteTypeRemorque{{ type.id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Veuillez confirmer la suppression ?</div>
+                                </div>
+                                <div class="modal-footer">
+                                <form method="post" action="{{ path('admin.remorque.type.delete', {id: type.id})}}">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger">Supprimer</button>
+                                </form>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Non</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- Modal ajouter un type -->
+<div class="modal fade" id="modalNewType" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalTitle">
+                    Ajouter un type :
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ include("admin/remorque/type/_form.html.twig", {form: form, button:'Ajouter'}) }}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal modifier type -->
+<div class="modal fade" id="modalType" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalTitle">
+                    Modifier le type :
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $('#modalType').on('shown.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const idType = button.attr('data-type-id');
+        let url = "{{ (path('admin.remorque.type.editer', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        url = url.replace("ReplaceMeWithCorrectValue", idType);
+        var modal = $(this);
+        $.ajax({
+            url: url,
+            success: function(data) {
+                modal.find('.modal-body').html(data);
+            }
+        });
+    });
+    </script>
+{% endblock %}
