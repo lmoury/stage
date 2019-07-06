@@ -14,7 +14,7 @@
         {% endblock %}
     </head>
     <body>
-        {{ include("inc/navbar.html.twig") }}
+        {{ include("frontend/inc/navbar.html.twig") }}
 
         <div class="container" id="container">
             {% for message in app.flashes('success') %}
@@ -24,14 +24,7 @@
             {% endfor %}
             {% block body %}{% endblock %}
         </div>
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                </div>
-            </div>
-        </div>
-        {{ include("inc/footer.html.twig") }}
+        {{ include("frontend/inc/footer.html.twig") }}
 
         {% block javascripts %}
             <!-- javascript -->

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\App;
+namespace App\Controller\Frontend;
 
 use App\Entity\Quai;
 use App\Entity\Operation;
@@ -35,7 +35,7 @@ class QuaiController extends AbstractController
     public function index(QuaiRepository $repoQuai)
     {
         $quais = $repoQuai->getQuais();
-        return $this->render('app/quai/index.html.twig', [
+        return $this->render('frontend/quai/index.html.twig', [
             'current_url' => $this->current_url,
             'quais' => $quais,
         ]);
@@ -88,7 +88,7 @@ class QuaiController extends AbstractController
             return $this->redirectToRoute('quai');
         }
 
-        return $this->render('app/quai/_formQuai.html.twig', [
+        return $this->render('frontend/quai/_formQuai.html.twig', [
             'form' => $form->createView(),
             'quai' => $quai,
 
@@ -113,7 +113,7 @@ class QuaiController extends AbstractController
             return $this->redirectToRoute('quai');
         }
 
-        return $this->render('app/quai/_formQuai.html.twig', [
+        return $this->render('frontend/quai/_formQuai.html.twig', [
             'form' => $form->createView(),
             'operation' => $operation
 

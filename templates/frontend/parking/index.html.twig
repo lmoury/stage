@@ -1,4 +1,4 @@
-{% extends 'layout.html.twig' %}
+{% extends 'frontend/layout.html.twig' %}
 
 {% block title %} Listing des parking {{ parent() }}{% endblock %}
 
@@ -45,11 +45,14 @@ Lorem ipsum dolor text....
                         <a href="#" data-title="Remorque" data-toggle="modal" data-target="#remorque{{ operation.remorque.id }}" >
                             {{ operation.remorque.remorque }}
                         </a>
-                        {{ include('inc/popupRemorque.html.twig', {id: operation.remorque.id, remorque: operation.remorque.remorque, immatriculation: operation.remorque.immatriculation, type: operation.remorque.type.denomination}) }}
+                        {{ include('frontend/inc/modalRemorque.html.twig', {id: operation.remorque.id, remorque: operation.remorque.remorque, immatriculation: operation.remorque.immatriculation, type: operation.remorque.type.denomination}) }}
                     </td>
                     <td>{{ parking.denomination }}</td>
                     <td>{{ operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
-                    <td><button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-operation-id="{{ operation.id }}">Parquer</button></td>
+                    <td>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-operation-id="{{ operation.id }}">Modification</button>
+                        {{ include('frontend/inc/modalParquer.html.twig') }}
+                    </td>
                 </tr>
                 {% endfor %}
                 {% endfor %}
@@ -75,7 +78,7 @@ Lorem ipsum dolor text....
                         <a href="#" data-title="Remorque" data-toggle="modal" data-target="#remorque{{ operation.remorque.id }}" >
                             {{ operation.remorque.remorque }}
                         </a>
-                        {{ include('inc/popupRemorque.html.twig', {id: operation.remorque.id, remorque: operation.remorque.remorque, immatriculation: operation.remorque.immatriculation, type: operation.remorque.type.denomination}) }}
+                        {{ include('frontend/inc/modalRemorque.html.twig', {id: operation.remorque.id, remorque: operation.remorque.remorque, immatriculation: operation.remorque.immatriculation, type: operation.remorque.type.denomination}) }}
                     </td>
                     <td>{{ operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
                     <td><button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-operation-id="{{ operation.id }}">Parquer</button></td>

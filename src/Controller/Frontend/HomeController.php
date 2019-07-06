@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\App;
+namespace App\Controller\Frontend;
 
 use App\Repository\QuaiRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +25,7 @@ class HomeController extends AbstractController
     public function index()
     {
         $quais = $this->repository->getQuais();
-        return $this->render('app/home/index.html.twig', [
+        return $this->render('frontend/home/index.html.twig', [
             'quais' => $quais,
         ]);
     }
@@ -37,7 +37,7 @@ class HomeController extends AbstractController
     public function plan(QuaiRepository $repoQuai)
     {
         $quais = $this->repository->getQuais();
-        return $this->render('app/home/plan.html.twig', [
+        return $this->render('frontend/home/plan.html.twig', [
             'quais' => $quais,
         ]);
     }

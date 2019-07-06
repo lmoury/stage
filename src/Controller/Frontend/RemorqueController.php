@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\App;
+namespace App\Controller\Frontend;
 
 use App\Repository\RemorqueRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +28,7 @@ class RemorqueController extends AbstractController
     public function index(RemorqueRepository $repository)
     {
         $remorques = $this->repository->getRemorques();
-        return $this->render('app/remorque/index.html.twig', [
+        return $this->render('frontend/remorque/index.html.twig', [
             'current_url' => $this->current_url,
             'remorques' => $remorques,
         ]);

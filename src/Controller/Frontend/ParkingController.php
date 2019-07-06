@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\App;
+namespace App\Controller\Frontend;
 
 use App\Entity\Operation;
 use App\Repository\ParkingRepository;
@@ -39,7 +39,7 @@ class ParkingController extends AbstractController
     public function index()
     {
         $parkings = $this->repository->getParkings();
-        return $this->render('app/parking/index.html.twig', [
+        return $this->render('frontend/parking/index.html.twig', [
             'current_url' => $this->current_url,
             'parkings' => $parkings,
         ]);
@@ -67,7 +67,7 @@ class ParkingController extends AbstractController
             return $this->redirectToRoute('parking');
         }
 
-        return $this->render('app/parking/_form.html.twig', [
+        return $this->render('frontend/parking/_form.html.twig', [
             'form' => $form->createView(),
             'operation' => $operation,
 

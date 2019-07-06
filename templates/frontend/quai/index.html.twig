@@ -1,4 +1,4 @@
-{% extends 'layout.html.twig' %}
+{% extends 'frontend/layout.html.twig' %}
 
 {% block title %} Listing des quais {{ parent() }}{% endblock %}
 
@@ -36,7 +36,7 @@
                     <a href="#" data-title="Remorque" data-toggle="modal" data-target="#remorque{{ quai.operation.remorque.id }}" >
                         {{ quai.operation.remorque.remorque }}
                     </a>
-                    {{ include('inc/popupRemorque.html.twig', {id: quai.operation.remorque.id, remorque: quai.operation.remorque.remorque, immatriculation: quai.operation.remorque.immatriculation, type:quai.operation.remorque.type.denomination}) }}
+                    {{ include('frontend/inc/modalRemorque.html.twig', {id: quai.operation.remorque.id, remorque: quai.operation.remorque.remorque, immatriculation: quai.operation.remorque.immatriculation, type:quai.operation.remorque.type.denomination}) }}
                     {% endif %}
                 </td>
                 <td>
@@ -51,6 +51,7 @@
                             <button class="btn btn-primary" data-toggle="modal" data-target="#modalQuai" onclick="modifQuai({{ quai.operation.id }})">Modifier</button>
                         {% elseif is_granted('ROLE_PARKING') %}
                             <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-operation-id="{{ quai.operation.id }}">Parquer</button>
+                            {{ include('frontend/inc/modalParquer.html.twig') }}
                         {% endif %}
                     {% elseif quai.maintenance == false and is_granted('ROLE_QUAI') %}
                         <button class="btn btn-primary" data-toggle="modal" data-target="#modalQuai" data-quai-id="{{ quai.id }}">Ajouter</button>

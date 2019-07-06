@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Backend;
 
 use App\Entity\Parking;
 use App\Repository\ParkingRepository;

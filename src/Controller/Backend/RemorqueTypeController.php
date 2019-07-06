@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Backend;
 
 use App\Entity\RemorqueType;
 use App\Repository\RemorqueTypeRepository;
