@@ -13,7 +13,7 @@
                 <th>Immatriculation</th>
                 <th>Type</th>
                 <th>Operation</th>
-                <th>Modifier</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -34,13 +34,14 @@
                         Le {{ remorque.operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}
                     {% else %}
                         Aucune opération
-
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('admin.remorque.editer', {id: remorque.id}) }}">Modification</a>
-                    {% if remorque.operation != null and remorque.operation.operation == 3 %}
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="addParking({{ remorque.operation.id }})">Parker</button>
+                    {% if is_granted('ROLE_EMPLOYE') %}
+                    <a class="btn btn-primary" href="{{ path('admin.remorque.editer', {id: remorque.id}) }}">Profil</a>
+                    {% endif %}
+                    {% if remorque.operation != null and remorque.operation.operation == 3 and is_granted('ROLE_PARKING') %}
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="addParking({{ remorque.operation.id }})">Parquer</button>
                     {% endif %}
                 </td>
             </tr>

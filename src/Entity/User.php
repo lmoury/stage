@@ -65,7 +65,6 @@ class User implements UserInterface,\Serializable
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Ce champ ne peut pas être vide")
      */
     private $password;
 

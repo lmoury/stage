@@ -23,23 +23,23 @@ class RemorqueController extends AbstractController
     /**
      * @var RemorqueRepository
      */
-    private $repoRemorque;
+    private $repository;
 
 
-    public function __construct(ObjectManager $em, RemorqueRepository $repoRemorque)
+    public function __construct(ObjectManager $em, RemorqueRepository $repository)
     {
             $this->em = $em;
-            $this->repoRemorque = $repoRemorque;
+            $this->repository = $repository;
     }
 
 
     /**
      * @Route("/admin/remorque", name="admin.remorque.index")
-     * @param RemorqueRepository $repoRemorque
+     * @param RemorqueRepository $repository
      */
     public function index()
     {
-        $remorques = $this->repoRemorque->findAll();
+        $remorques = $this->repository->getRemorques();
         return $this->render('backend/remorque/index.html.twig', [
             'current_url' => $this->current_url,
             'remorques' => $remorques,
@@ -49,7 +49,7 @@ class RemorqueController extends AbstractController
 
     /**
    * @Route("/admin/remorque/new", name="admin.remorque.new")
-   * @param RemorqueRepository $repoRemorque
+   * @param ObjectManager em
    * @param Request $request
    */
    public function new(Request $request)
@@ -62,6 +62,7 @@ class RemorqueController extends AbstractController
        if($form->isSubmitted() && $form->isValid()) {
            $this->em->persist($remorque);
            $this->em->flush();
+           $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été ajouté');
            return $this->redirectToRoute('admin.remorque.index');
        }
 
@@ -74,6 +75,7 @@ class RemorqueController extends AbstractController
 
    /**
     * @Route("/admin/remorque/editer.{id}", name="admin.remorque.editer", methods="GET|POST")
+    * @param ObjectManager em
     * @param Remorque $remorque
     * @param Request $request
     */
@@ -86,6 +88,7 @@ class RemorqueController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $remorque->setDateEdition(new \DateTime());
             $this->em->flush();
+            $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été modifié');
             return $this->redirectToRoute('admin.remorque.index');
         }
 
@@ -98,6 +101,7 @@ class RemorqueController extends AbstractController
 
     /**
     * @Route("/admin/remorque/delete.{id}", name="admin.remorque.delete", methods="DELETE")
+    * @param ObjectManager em
     * @param Remorque $remorque
     * @param Request $request
     */
@@ -106,7 +110,7 @@ class RemorqueController extends AbstractController
         if($this->isCsrfTokenValid('delete' . $remorque->getId(), $request->get('_token'))) {
             $this->em->remove($remorque);
             $this->em->flush();
-            $this->addFlash('success', 'La remorque a été supprimer avec success');
+            $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été supprimé');
         }
         return $this->redirectToRoute('admin.remorque.index');
     }

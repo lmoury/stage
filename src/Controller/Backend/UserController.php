@@ -10,7 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
 class UserController extends AbstractController
 {
 
@@ -19,23 +23,23 @@ class UserController extends AbstractController
     /**
      * @var UserRepository
      */
-    private $repoUser;
+    private $repository;
 
 
-    public function __construct(ObjectManager $em, UserRepository $repoUser)
+    public function __construct(ObjectManager $em, UserRepository $repository)
     {
             $this->em = $em;
-            $this->repoUser = $repoUser;
+            $this->repository = $repository;
     }
 
 
     /**
      * @Route("/admin/utilisateur", name="admin.utilisateur.index")
-     * @param UserRepository $repoUser
+     * @param UserRepository $repository
      */
     public function index()
     {
-        $users = $this->repoUser->findAll();
+        $users = $this->repository->findAll();
         return $this->render('backend/utilisateur/index.html.twig', [
             'current_url' => $this->current_url,
             'users' => $users,
@@ -45,7 +49,6 @@ class UserController extends AbstractController
 
     /**
    * @Route("/admin/utilisateur/new", name="admin.utilisateur.new")
-   * @param UserRepository $repoUser
    * @param UserPasswordEncoderInterface $encoder
    * @param Request $request
    */
@@ -60,6 +63,7 @@ class UserController extends AbstractController
            $user->setPassword($encoder->encodePassword($user, $request->request->get('user')['password']));
            $this->em->persist($user);
            $this->em->flush();
+           $this->addFlash('success', 'L\'utilisateur <strong>'.$user->getUsername().'</strong> à été ajouté');
            return $this->redirectToRoute('admin.utilisateur.index');
        }
 
@@ -84,6 +88,7 @@ class UserController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $user->setDateEdition(new \DateTime());
             $this->em->flush();
+            $this->addFlash('success', 'L\'utilisateur <strong>'.$user->getUsername().'</strong> à été modifié');
             return $this->redirectToRoute('admin.utilisateur.index');
         }
 
@@ -105,7 +110,7 @@ class UserController extends AbstractController
         if($this->isCsrfTokenValid('delete' . $user->getId(), $request->get('_token'))) {
             $this->em->remove($user);
             $this->em->flush();
-            $this->addFlash('success', 'L\'utilisateur a été supprimer avec success');
+            $this->addFlash('success', 'L\'utilisateur <strong>'.$user->getUsername().'</strong> à été supprimé');
         }
         return $this->redirectToRoute('admin.utilisateur.index');
     }

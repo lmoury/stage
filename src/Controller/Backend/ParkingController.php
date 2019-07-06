@@ -23,17 +23,18 @@ class ParkingController extends AbstractController
     /**
      * @var ParkingRepository
      */
-    private $repoParking;
+    private $repository;
 
-    public function __construct(ObjectManager $em, ParkingRepository $repoParking)
+    public function __construct(ObjectManager $em, ParkingRepository $repository)
     {
         $this->em = $em;
-        $this->repoParking = $repoParking;
+        $this->repository = $repository;
     }
 
     /**
      * @Route("/admin/parking", name="admin.parking.index")
-     * @param ParkingRepository $repoParking
+     * @param ObjectManager em
+     * @param ParkingRepository $repository
      * @param Request $request
      */
     public function index(Request $request)
@@ -45,10 +46,11 @@ class ParkingController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($parking);
             $this->em->flush();
+            $this->addFlash('success', 'Le parking <strong>'.$parking->getDenomination().'</strong> à été ajouté');
             return $this->redirectToRoute('admin.parking.index');
         }
 
-        $parkings = $this->repoParking->getParkings();
+        $parkings = $this->repository->getParkings();
         return $this->render('backend/parking/index.html.twig', [
             'current_url' => $this->current_url,
             'parkings' => $parkings,
@@ -61,23 +63,23 @@ class ParkingController extends AbstractController
      * @Route("/admin/parking/delete.{id}", name="admin.parking.delete", methods="DELETE")
      * @param ObjectManager em
      * @param Parking $parking
-     * @param Request $request
      */
-    public function delete(Parking $parking, Request $request)
+    public function delete(Parking $parking)
     {
       $this->em->remove($parking);
       $this->em->flush();
-      $this->addFlash('success', 'Parking supprimer avec success');
+      $this->addFlash('success', 'Le parking <strong>'.$parking->getDenomination().'</strong> à été supprimé');
       return $this->redirectToRoute('admin.parking.index');
     }
 
 
     /**
      * @Route("/admin/parking/editer.{id}", name="admin.parking.editer")
+     * @param ObjectManager em
      * @param Parking $parking
      * @param Request $request
      */
-    public function editerParking(Request $request, Parking $parking)
+    public function editer(Request $request, Parking $parking)
     {
         $form = $this->createForm(ParkingType::class, $parking, [
             'action' => $this->generateUrl('admin.parking.editer', ['id' => $parking->getId()]),
@@ -86,7 +88,7 @@ class ParkingController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
-            $this->addFlash('success', 'La discussion a été supprimer avec success');
+            $this->addFlash('success', 'Le parking <strong>'.$parking->getDenomination().'</strong> à été modifié');
             return $this->redirectToRoute('admin.parking.index');
         }
 

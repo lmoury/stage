@@ -23,17 +23,17 @@ class QuaiController extends AbstractController
     /**
      * @var QuaiRepository
      */
-    private $repoQuai;
+    private $repository;
 
-    public function __construct(ObjectManager $em, QuaiRepository $repoQuai)
+    public function __construct(ObjectManager $em, QuaiRepository $repository)
     {
         $this->em = $em;
-        $this->repoQuai = $repoQuai;
+        $this->repository = $repository;
     }
 
     /**
      * @Route("/admin/quai", name="admin.quai.index")
-     * @param QuaiRepository $repoQuai
+     * @param QuaiRepository $repository
      * @param Request $request
      */
     public function index(Request $request)
@@ -45,10 +45,11 @@ class QuaiController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($quai);
             $this->em->flush();
+            $this->addFlash('success', 'Le quai <strong>'.$quai->getNumero().'</strong> à été ajouté');
             return $this->redirectToRoute('admin.quai.index');
         }
 
-        $quais = $this->repoQuai->getQuais();
+        $quais = $this->repository->getQuais();
         return $this->render('backend/quai/index.html.twig', [
             'current_url' => $this->current_url,
             'quais' => $quais,
@@ -58,16 +59,15 @@ class QuaiController extends AbstractController
 
 
     /**
-     * @Route("/commmentaire/{id}", name="admin.quai.delete", methods="DELETE")
+     * @Route("/admin/quai/delete.{id}", name="admin.quai.delete", methods="DELETE")
      * @param ObjectManager em
      * @param Quai $quai
-     * @param Request $request
      */
-    public function delete(Quai $quai, Request $request)
+    public function delete(Quai $quai)
     {
       $this->em->remove($quai);
       $this->em->flush();
-      $this->addFlash('success', 'Quai supprimer avec success');
+      $this->addFlash('success', 'Le quai <strong>'.$quai->getNumero().'</strong> à été supprimé');
       return $this->redirectToRoute('admin.quai.index');
     }
 

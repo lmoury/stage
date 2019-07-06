@@ -13,9 +13,11 @@
                 <div><span>Immatriculation : </span><span>{{ immatriculation }}</span></div>
                 <div><span>Type : </span><span>{{ type }}</span></div>
             </div>
+            {% if is_granted('ROLE_EMPLOYE') %}
             <div class="modal-footer">
-                <a href="{{ path('admin.remorque.editer', {id: id}) }}">Profil</a>
+                <a class="btn btn-primary" href="{{ path('admin.remorque.editer', {id: id}) }}">Profil</a>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

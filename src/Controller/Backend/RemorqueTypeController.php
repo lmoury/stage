@@ -23,18 +23,18 @@ class RemorqueTypeController extends AbstractController
     /**
      * @var RemorqueTypeRepository
      */
-    private $repositoryType;
+    private $repository;
 
-    public function __construct(ObjectManager $em, RemorqueTypeRepository $repositoryType)
+    public function __construct(ObjectManager $em, RemorqueTypeRepository $repository)
     {
         $this->em = $em;
-        $this->repositoryType = $repositoryType;
+        $this->repository = $repository;
     }
 
     /**
      * @Route("/admin/remorque/type", name="admin.remorque.type.index")
      * @param ObjectManager em
-     * @param RemorqueTypeRepository repositoryType
+     * @param RemorqueTypeRepository repository
      * @param Request $request
      */
     public function index(Request $request)
@@ -46,11 +46,11 @@ class RemorqueTypeController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($remorqueType);
             $this->em->flush();
-            $this->addFlash('success', 'Le type '.$remorqueType->getDenomination().' a été ajouté avec success');
+            $this->addFlash('success', 'Le type <strong>'.$remorqueType->getDenomination().'</strong> a été ajouté');
             return $this->redirectToRoute('admin.remorque.type.index');
         }
 
-        $remorqueTypes = $this->repositoryType->findAll();
+        $remorqueTypes = $this->repository->findAll();
         return $this->render('backend/remorque/type/index.html.twig', [
             'current_url' => $this->current_url,
             'remorqueTypes' => $remorqueTypes,
@@ -63,13 +63,12 @@ class RemorqueTypeController extends AbstractController
      * @Route("/admin/remorque/type/delete.{id}", name="admin.remorque.type.delete", methods="DELETE")
      * @param ObjectManager em
      * @param RemorqueType $remorqueType
-     * @param Request $request
      */
-    public function delete(RemorqueType $remorqueType, Request $request)
+    public function delete(RemorqueType $remorqueType)
     {
       $this->em->remove($remorqueType);
       $this->em->flush();
-      $this->addFlash('success', 'Le type '.$remorqueType->getDenomination().' a été supprimé avec success');
+      $this->addFlash('success', 'Le type <strong>'.$remorqueType->getDenomination().'</strong> a été supprimé');
       return $this->redirectToRoute('admin.remorque.type.index');
     }
 
@@ -80,7 +79,7 @@ class RemorqueTypeController extends AbstractController
      * @param RemorqueType $remorqueType
      * @param Request $request
      */
-    public function editerParking(Request $request, RemorqueType $remorqueType)
+    public function editer(Request $request, RemorqueType $remorqueType)
     {
         $form = $this->createForm(RemorqueTypeType::class, $remorqueType, [
             'action' => $this->generateUrl('admin.remorque.type.editer', ['id' => $remorqueType->getId()]),
@@ -89,7 +88,7 @@ class RemorqueTypeController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
-            $this->addFlash('success', 'Le type '.$remorqueType->getDenomination().' a été edité avec success');
+            $this->addFlash('success', 'Le type <strong>'.$remorqueType->getDenomination().'</strong> a été modifié');
             return $this->redirectToRoute('admin.remorque.type.index');
         }
 

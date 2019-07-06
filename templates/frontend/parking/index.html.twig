@@ -45,7 +45,11 @@
                     </td>
                     <td>{{ parking.denomination }}</td>
                     <td>{{ operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
-                    <td><button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ operation.id }}">Modification</button></td>
+                    <td>
+                        {% if is_granted('ROLE_PARKING') %}
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ operation.id }}">Modification</button>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
                 {% endfor %}
@@ -74,7 +78,11 @@
                         {{ include('frontend/inc/modalRemorque.html.twig', {id: operation.remorque.id, remorque: operation.remorque.remorque, immatriculation: operation.remorque.immatriculation, type: operation.remorque.type.denomination}) }}
                     </td>
                     <td>{{ operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
-                    <td><button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ operation.id }}">Modification</button></td>
+                    <td>
+                        {% if is_granted('ROLE_PARKING') %}
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ operation.id }}">Modification</button>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

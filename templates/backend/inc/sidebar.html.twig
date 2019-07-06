@@ -27,17 +27,6 @@
                 </li>
             </ul>
         </li>
-        <li class="{% if current_url is defined and current_url == 'user' %}active{% endif %}">
-            <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Utilisateurs</a>
-            <ul class="collapse list-unstyled" id="userSubmenu">
-                <li>
-                    <a href="{{ path('admin.utilisateur.index') }}">Liste des utilisateurs</a>
-                </li>
-                <li>
-                    <a href="{{ path('admin.utilisateur.new') }}">Ajouter un utilisateur</a>
-                </li>
-            </ul>
-        </li>
         <li class="{% if current_url is defined and current_url == 'quai' %}active{% endif %}">
             <a href="#quaiSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Quais</a>
             <ul class="collapse list-unstyled" id="quaiSubmenu">
@@ -60,6 +49,19 @@
                 </li>
             </ul>
         </li>
+        {% if is_granted('ROLE_ADMIN') %}
+        <li class="{% if current_url is defined and current_url == 'user' %}active{% endif %}">
+            <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Utilisateurs</a>
+            <ul class="collapse list-unstyled" id="userSubmenu">
+                <li>
+                    <a href="{{ path('admin.utilisateur.index') }}">Liste des utilisateurs</a>
+                </li>
+                <li>
+                    <a href="{{ path('admin.utilisateur.new') }}">Ajouter un utilisateur</a>
+                </li>
+            </ul>
+        </li>
+        {% endif %}
         <li>
             <a href="#">Contact</a>
         </li>
