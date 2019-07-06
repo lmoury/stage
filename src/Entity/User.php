@@ -18,7 +18,7 @@ class User implements UserInterface,\Serializable
             1=> 'ROLE_EMPLOYE',
             2=> 'ROLE_QUAI',
             3=> 'ROLE_PARKING',
-            4=> 'ROLE_SUPER_ADMIN'
+            4=> 'ROLE_ADMIN'
     ];
 
 
