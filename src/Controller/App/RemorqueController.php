@@ -3,10 +3,8 @@
 namespace App\Controller\App;
 
 use App\Repository\RemorqueRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 class RemorqueController extends AbstractController
 {
@@ -14,22 +12,22 @@ class RemorqueController extends AbstractController
     private $current_url = 'remorques';
 
     /**
-     * @var ObjectManager
+     * @var RemorqueRepository
      */
-    private $em;
+    private $repository;
 
-    public function __construct(ObjectManager $em)
+    public function __construct(RemorqueRepository $repository)
     {
-        $this->em = $em;
+        $this->repository = $repository;
     }
 
     /**
      * @Route("/remorques", name="remorques")
-     * @param RemorqueRepository $repoRemorque
+     * @param RemorqueRepository $repository
      */
-    public function index(RemorqueRepository $repoRemorque)
+    public function index(RemorqueRepository $repository)
     {
-        $remorques = $repoRemorque->getRemorques();
+        $remorques = $this->repository->getRemorques();
         return $this->render('app/remorque/index.html.twig', [
             'current_url' => $this->current_url,
             'remorques' => $remorques,

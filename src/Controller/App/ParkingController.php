@@ -13,25 +13,34 @@ use Symfony\Component\HttpFoundation\Request;
 class ParkingController extends AbstractController
 {
 
+    private $current_url = 'parking';
+
     /**
      * @var ObjectManager
      */
     private $em;
 
-    public function __construct(ObjectManager $em)
+    /**
+     * @var ParkingRepository
+     */
+    private $repository;
+
+    public function __construct(ObjectManager $em, ParkingRepository $repository)
     {
         $this->em = $em;
+        $this->repository = $repository;
     }
 
 
     /**
      * @Route("parking", name="parking")
+     * @param ParkingRepository $repository
      */
-    public function index(ParkingRepository $repository)
+    public function index()
     {
-        $parkings = $repository->getParkings();
+        $parkings = $this->repository->getParkings();
         return $this->render('app/parking/index.html.twig', [
-            'current_url' => 'parking',
+            'current_url' => $this->current_url,
             'parkings' => $parkings,
         ]);
     }
@@ -39,6 +48,7 @@ class ParkingController extends AbstractController
     /**
      * @Route("/parquer.{id}", name="parking.parquer")
      * @param Operation $operation
+     * @param Request $request
      */
     public function parquer(Request $request, Operation $operation)
     {
@@ -53,11 +63,11 @@ class ParkingController extends AbstractController
             $operation->setQuai(NULL);
             $operation->setDateCreation(new \DateTime());
             $this->em->flush();
-            $this->addFlash('success', 'La discussion a été supprimer avec success');
+            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> à été mise sur le parking : <strong>'.$operation->getParking()->getDenomination().'</strong>');
             return $this->redirectToRoute('parking');
         }
 
-        return $this->render('app/quai/_form.html.twig', [
+        return $this->render('app/parking/_form.html.twig', [
             'form' => $form->createView(),
             'operation' => $operation,
 

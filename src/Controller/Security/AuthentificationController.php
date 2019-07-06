@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Security;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,7 @@ class AuthentificationController extends AbstractController
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render('authentification/login.html.twig', [
+        return $this->render('security/authentification/login.html.twig', [
             'current_url' => 'login',
             'lastUsername' => $lastUsername,
             'error' => $error,
