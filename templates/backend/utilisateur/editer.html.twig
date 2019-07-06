@@ -1,4 +1,4 @@
-{% extends 'admin/layout.html.twig' %}
+{% extends 'backend/layout.html.twig' %}
 
 {% block title %} Modification de {{ user.prenom }} {{ user.nom }} {{ parent() }}{% endblock %}
 
@@ -21,7 +21,7 @@
 
 <!-- formulaire utilisateur -->
 <div class="content-section mb-4 p-4">
-    {{ include('admin/utilisateur/_form.html.twig', {form: form, button:'Modifier l\'utilisateur'}) }}
+    {{ include('backend/utilisateur/_form.html.twig', {form: form, button:'Modifier l\'utilisateur'}) }}
 </div>
 
 <!-- modal -->

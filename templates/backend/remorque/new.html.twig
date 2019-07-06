@@ -1,4 +1,4 @@
-{% extends 'admin/layout.html.twig' %}
+{% extends 'backend/layout.html.twig' %}
 
 {% block title %} Ajouter une remorque {{ parent() }}{% endblock %}
 
@@ -11,6 +11,6 @@
 
 {% block body %}
 <div class="content-section p-3">
-    {{ include('admin/remorque/_form.html.twig', {form: form, button:'Ajouter une remorque'}) }}
+    {{ include('backend/remorque/_form.html.twig', {form: form, button:'Ajouter une remorque'}) }}
 </div>
 {% endblock %}

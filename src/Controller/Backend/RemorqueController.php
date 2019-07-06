@@ -40,7 +40,7 @@ class RemorqueController extends AbstractController
     public function index()
     {
         $remorques = $this->repoRemorque->findAll();
-        return $this->render('admin/remorque/index.html.twig', [
+        return $this->render('backend/remorque/index.html.twig', [
             'current_url' => $this->current_url,
             'remorques' => $remorques,
         ]);
@@ -65,7 +65,7 @@ class RemorqueController extends AbstractController
            return $this->redirectToRoute('admin.remorque.index');
        }
 
-       return $this->render('admin/remorque/new.html.twig', [
+       return $this->render('backend/remorque/new.html.twig', [
            'current_url' => $this->current_url,
            'form' => $form->createView()
        ]);
@@ -89,7 +89,7 @@ class RemorqueController extends AbstractController
             return $this->redirectToRoute('admin.remorque.index');
         }
 
-        return $this->render('admin/remorque/editer.html.twig', [
+        return $this->render('backend/remorque/editer.html.twig', [
             'current_url' => $this->current_url,
             'form' => $form->createView(),
             'remorque' => $remorque

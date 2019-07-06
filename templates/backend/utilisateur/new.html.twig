@@ -1,4 +1,4 @@
-{% extends 'admin/layout.html.twig' %}
+{% extends 'backend/layout.html.twig' %}
 
 {% block title %} Ajouter un utilisateur {{ parent() }}{% endblock %}
 
@@ -11,6 +11,6 @@
 
 {% block body %}
 <div class="content-section p-3">
-    {{ include('admin/utilisateur/_form.html.twig', {form: form, button:'Ajouter un utilisateur'}) }}
+    {{ include('backend/utilisateur/_form.html.twig', {form: form, button:'Ajouter un utilisateur'}) }}
 </div>
 {% endblock %}

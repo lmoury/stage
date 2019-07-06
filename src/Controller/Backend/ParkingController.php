@@ -49,7 +49,7 @@ class ParkingController extends AbstractController
         }
 
         $parkings = $this->repoParking->getParkings();
-        return $this->render('admin/parking/index.html.twig', [
+        return $this->render('backend/parking/index.html.twig', [
             'current_url' => $this->current_url,
             'parkings' => $parkings,
             'form' => $form->createView()
@@ -90,7 +90,7 @@ class ParkingController extends AbstractController
             return $this->redirectToRoute('admin.parking.index');
         }
 
-        return $this->render('admin/parking/_form.html.twig', [
+        return $this->render('backend/parking/_form.html.twig', [
             'form' => $form->createView(),
             'parking' => $parking
         ]);

@@ -36,7 +36,7 @@ class UserController extends AbstractController
     public function index()
     {
         $users = $this->repoUser->findAll();
-        return $this->render('admin/utilisateur/index.html.twig', [
+        return $this->render('backend/utilisateur/index.html.twig', [
             'current_url' => $this->current_url,
             'users' => $users,
         ]);
@@ -63,7 +63,7 @@ class UserController extends AbstractController
            return $this->redirectToRoute('admin.utilisateur.index');
        }
 
-       return $this->render('admin/utilisateur/new.html.twig', [
+       return $this->render('backend/utilisateur/new.html.twig', [
            'current_url' => $this->current_url,
            'form' => $form->createView()
        ]);
@@ -87,7 +87,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('admin.utilisateur.index');
         }
 
-        return $this->render('admin/utilisateur/editer.html.twig', [
+        return $this->render('backend/utilisateur/editer.html.twig', [
             'current_url' => $this->current_url,
             'form' => $form->createView(),
             'user' => $user

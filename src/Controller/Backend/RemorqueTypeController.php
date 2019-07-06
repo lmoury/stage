@@ -51,7 +51,7 @@ class RemorqueTypeController extends AbstractController
         }
 
         $remorqueTypes = $this->repositoryType->findAll();
-        return $this->render('admin/remorque/type/index.html.twig', [
+        return $this->render('backend/remorque/type/index.html.twig', [
             'current_url' => $this->current_url,
             'remorqueTypes' => $remorqueTypes,
             'form' => $form->createView()
@@ -93,7 +93,7 @@ class RemorqueTypeController extends AbstractController
             return $this->redirectToRoute('admin.remorque.type.index');
         }
 
-        return $this->render('admin/remorque/type/_form.html.twig', [
+        return $this->render('backend/remorque/type/_form.html.twig', [
             'remorqueTypes' => $remorqueType,
             'form' => $form->createView()
         ]);

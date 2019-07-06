@@ -49,7 +49,7 @@ class QuaiController extends AbstractController
         }
 
         $quais = $this->repoQuai->getQuais();
-        return $this->render('admin/quai/index.html.twig', [
+        return $this->render('backend/quai/index.html.twig', [
             'current_url' => $this->current_url,
             'quais' => $quais,
             'form' => $form->createView()
