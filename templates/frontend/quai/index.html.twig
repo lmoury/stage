@@ -33,7 +33,7 @@
                 <td>{% if quai.operation %}{{ quai.operation.operationType }}{% elseif quai.maintenance %}En maitenance{% else %}Libre{% endif %}</td>
                 <td>
                     {% if quai.operation %}
-                    <a href="#" data-title="Remorque" data-toggle="modal" data-target="#remorque{{ quai.operation.remorque.id }}" >
+                    <a href="#" data-title="Remorque" data-toggle="modal" data-target="#modalRemorque{{ quai.operation.remorque.id }}" >
                         {{ quai.operation.remorque.remorque }}
                     </a>
                     {{ include('frontend/inc/modalRemorque.html.twig', {id: quai.operation.remorque.id, remorque: quai.operation.remorque.remorque, immatriculation: quai.operation.remorque.immatriculation, type:quai.operation.remorque.type.denomination}) }}
@@ -48,13 +48,12 @@
                     {% if quai.operation %}
                         {% if quai.operation.operation == 2 and is_granted('ROLE_QUAI') %}
                             <a class="btn btn-primary" href="{{ path('app.quai.deplacer', {id: quai.operation.id}) }}">Terminer</a>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalQuai" onclick="modifQuai({{ quai.operation.id }})">Modifier</button>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalQuai" data-operation="modif" data-id="{{ quai.operation.id }}">Modifier</button>
                         {% elseif is_granted('ROLE_PARKING') %}
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-operation-id="{{ quai.operation.id }}">Parquer</button>
-                            {{ include('frontend/inc/modalParquer.html.twig') }}
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ quai.operation.id }}">Parquer</button>
                         {% endif %}
                     {% elseif quai.maintenance == false and is_granted('ROLE_QUAI') %}
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalQuai" data-quai-id="{{ quai.id }}">Ajouter</button>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalQuai" data-operation="add" data-id="{{ quai.id }}">Ajouter</button>
                     {% endif %}
                 </td>
             </tr>
@@ -63,6 +62,7 @@
         </tbody>
     </table>
 </div>
+{{ include('frontend/inc/modalParquer.html.twig') }}
 <!-- Modal -->
 <div class="modal fade" id="modalQuai" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -76,9 +76,15 @@
     <script>
     $('#modalQuai').on('shown.bs.modal', function (event) {
         const button = $(event.relatedTarget);
-        const idQuai = button.attr('data-quai-id');
-        let url = "{{ (path('quai.new', {id: 'ReplaceMeWithCorrectValue'})) }}";
-        url = url.replace("ReplaceMeWithCorrectValue", idQuai);
+        const ope = button.attr('data-operation');
+        const id = button.attr('data-id');
+        if(ope == 'add') {
+            var url = "{{ (path('quai.new', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        }
+        else {
+            var url = "{{ (path('quai.modifier', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        }
+        url = url.replace("ReplaceMeWithCorrectValue", id);
         var modal = $(this);
         $.ajax({
             url: url,
@@ -87,21 +93,5 @@
             }
         });
     });
-
-
-    function modifQuai(id) {
-        let url = "{{ (path('quai.modifier', {id: 'ReplaceMeWithCorrectValue'})) }}";
-
-        url = url.replace("ReplaceMeWithCorrectValue", id);
-        $('#modalQuai').on('shown.bs.modal', function () {
-            var modal = $(this);
-            $.ajax({
-                url: url,
-                success: function(data) {
-                    modal.find('.modal-content').html(data);
-                }
-            });
-        });
-    }
     </script>
 {% endblock %}

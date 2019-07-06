@@ -23,7 +23,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->render('admin/home.html.twig', [
+        return $this->render('admin/home/index.html.twig', [
             'current_url' => $this->current_url,
         ]);
     }
