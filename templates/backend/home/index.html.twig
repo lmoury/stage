@@ -1,12 +1,11 @@
 {% extends 'backend/layout.html.twig' %}
 
-{% block title %} Créer un nouvel utilisateur {{ parent() }}{% endblock %}
+{% block title %} Home {{ parent() }}{% endblock %}
 
-{% block titrePage %}Créer un nouvel utilisateur{% endblock %}
+{% block titrePage %}Home{% endblock %}
 
 {% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{{ path('admin.utilisateur.index') }}">Utilisateurs</a></li>
-<li class="breadcrumb-item">Créer un nouvel utilisateur</li>
+<li class="breadcrumb-item">Home</li>
 {% endblock %}
 
 {% block body %}

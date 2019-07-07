@@ -5,8 +5,9 @@ namespace App\DataFixtures;
 use App\Entity\Quai;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
-class QuaiFixture extends Fixture
+class QuaiFixture extends Fixture implements OrderedFixtureInterface
 {
 
     public function load(ObjectManager $manager)
@@ -111,5 +112,9 @@ class QuaiFixture extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public function getOrder() {
+        return 3;
     }
 }

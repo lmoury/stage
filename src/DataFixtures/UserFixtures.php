@@ -5,8 +5,9 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -24,5 +25,9 @@ class UserFixtures extends Fixture
         //     // $manager->persist($product);
         // }
         // $manager->flush();
+    }
+
+    public function getOrder() {
+        return 4;
     }
 }

@@ -88,7 +88,7 @@ class QuaiController extends AbstractController
             return $this->redirectToRoute('quai');
         }
 
-        return $this->render('frontend/quai/_formQuai.html.twig', [
+        return $this->render('frontend/quai/_form.html.twig', [
             'form' => $form->createView(),
             'quai' => $quai,
 
@@ -113,7 +113,7 @@ class QuaiController extends AbstractController
             return $this->redirectToRoute('quai');
         }
 
-        return $this->render('frontend/quai/_formQuai.html.twig', [
+        return $this->render('frontend/quai/_form.html.twig', [
             'form' => $form->createView(),
             'operation' => $operation
 
