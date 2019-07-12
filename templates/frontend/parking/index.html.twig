@@ -104,7 +104,28 @@
                 </button>
             </div>
             <div class="modal-body">
-
+                {{ form_start(form) }}
+                <div class="mb-2">Veuillez choisir une remorque :</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_widget(form.parking) }}
+                        {{ form_errors(form.parking) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_widget(form.remorque) }}
+                        {{ form_errors(form.remorque) }}
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_rest(form) }}
+                        <div class="text-center btn-container">
+                            <button class="btn btn-primary">{{ button|default('Ajouter')}}</button>
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
