@@ -1,0 +1,39 @@
+{% extends 'frontend/layout.html.twig' %}
+
+{% block title %} Listing des tournées {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-4">Listing des tournées</h1>
+<div class="content-section mb-4">
+    <table class="table" id="tableSearch">
+        <thead>
+            <tr>
+                <th>Tournée</th>
+                <th>Chauffeur</th>
+                <th>Tracteur</th>
+                <th>Affectation</th>
+                <th>Remorque</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for planning in plannings %}
+            <tr>
+                <td>{{ planning.tournee }}</td>
+                <td>{{ planning.chauffeur }}</td>
+                <td>{{ planning.tracteur }}</td>
+                <td>
+                    {% if planning.operation %}
+                        {{ planning.operation.traction.affectation }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if planning.operation %}
+                        {{ planning.operation.remorque.remorque }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

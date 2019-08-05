@@ -91,7 +91,6 @@ class QuaiController extends AbstractController
         return $this->render('frontend/quai/_form.html.twig', [
             'form' => $form->createView(),
             'quai' => $quai,
-
         ]);
     }
 

@@ -1,0 +1,108 @@
+{% extends 'frontend/layout.html.twig' %}
+
+{% block title %} Listing des tractions {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-4">Listing des tractions</h1>
+<div class="content-section mb-4">
+    <table class="table" id="tableSearch">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Affectation</th>
+                <th>Porte</th>
+                <th>Heure de mise à quai</th>
+                <th>Remorque</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for traction in tractions %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ traction.affectation }}</td>
+                <td>{{ traction.porte }}</td>
+                <td>
+                    {% if traction.operation and traction.operation.planning == null %}
+                        {{ traction.operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if traction.operation and traction.operation.planning == null %}
+                    <a href="#" data-title="Remorque" data-toggle="modal" data-target="#modalRemorque{{ traction.operation.remorque.id }}" >
+                        {{ traction.operation.remorque.remorque }}
+                    </a>
+                    {{ include('frontend/inc/modalRemorque.html.twig', {id: traction.operation.remorque.id, remorque: traction.operation.remorque.remorque, immatriculation: traction.operation.remorque.immatriculation, type:traction.operation.remorque.type.denomination}) }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if traction.operation %}
+                        {% if traction.operation.operation == 2 and is_granted('ROLE_QUAI') %}
+                            <a class="btn btn-primary" href="{{ path('traction.terminer', {id: traction.operation.id}) }}">Terminer</a>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="modif" data-id="{{ traction.operation.id }}">Modifier</button>
+                        {% elseif traction.operation.operation == 3 and is_granted('ROLE_PARKING') %}
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ traction.operation.id }}">Parquer</button>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalPlanning" data-id="{{ traction.operation.id }}">Affecter</button>
+                        {% endif %}
+                    {% elseif is_granted('ROLE_QUAI') %}
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="add" data-id="{{ traction.id }}">Ajouter</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{{ include('frontend/inc/modalParquer.html.twig') }}
+<div class="modal fade" id="modalPlanning" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!-- Modal traction -->
+<div class="modal fade" id="modalTraction" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $('#modalPlanning').on('shown.bs.modal', function (event) {
+          const button = $(event.relatedTarget);
+          const id = button.attr('data-id');
+          let url = "{{ (path('planning.affecter', {id: 'ReplaceMeWithCorrectValue'})) }}";
+          url = url.replace("ReplaceMeWithCorrectValue", id);
+        var modal = $(this);
+        $.ajax({
+            url: url,
+            success: function(data) {
+                console.log('AJAX');
+                modal.find('.modal-content').html(data);
+            }
+        });
+    });
+    $('#modalTraction').on('shown.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const ope = button.attr('data-operation');
+        const id = button.attr('data-id');
+        if(ope == 'add') {
+            var url = "{{ (path('traction.new', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        }
+        else {
+            var url = "{{ (path('traction.editer', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        }
+        url = url.replace("ReplaceMeWithCorrectValue", id);
+        var modal = $(this);
+        $.ajax({
+            url: url,
+            success: function(data) {
+                modal.find('.modal-content').html(data);
+            }
+        });
+    });
+    </script>
+{% endblock %}

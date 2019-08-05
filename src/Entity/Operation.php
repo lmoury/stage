@@ -14,7 +14,8 @@ class Operation
             1=> 'En maintenance',
             2=> 'Chargement/dechargement',
             3=> 'A deplacer',
-            4=> 'Parking'
+            4=> 'Parking',
+            5=> 'En tournée'
     ];
 
     /**
@@ -49,6 +50,16 @@ class Operation
      * @ORM\OneToOne(targetEntity="App\Entity\Quai", inversedBy="operation")
      */
     private $quai;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Traction", inversedBy="operation", cascade={"persist", "remove"})
+     */
+    private $traction;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Planning", inversedBy="operation", cascade={"persist", "remove"})
+     */
+    private $planning;
 
     public function __construct() {
         $this->date_creation = new \DateTime();
@@ -120,6 +131,30 @@ class Operation
     public function setQuai(?Quai $quai): self
     {
         $this->quai = $quai;
+
+        return $this;
+    }
+
+    public function getTraction(): ?Traction
+    {
+        return $this->traction;
+    }
+
+    public function setTraction(?Traction $traction): self
+    {
+        $this->traction = $traction;
+
+        return $this;
+    }
+
+    public function getPlanning(): ?Planning
+    {
+        return $this->planning;
+    }
+
+    public function setPlanning(?Planning $planning): self
+    {
+        $this->planning = $planning;
 
         return $this;
     }
