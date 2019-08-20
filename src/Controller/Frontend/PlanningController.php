@@ -3,8 +3,11 @@
 namespace App\Controller\Frontend;
 
 use App\Entity\Operation;
+use App\Entity\Planning;
 use App\Repository\PlanningRepository;
 use App\Form\OperationPlanningType;
+use App\Form\OperationQuaiType;
+use App\Repository\OperationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,30 +50,68 @@ class PlanningController extends AbstractController
 
 
     /**
-     * @Route("/planning/affecter.{id}", name="planning.affecter", methods="GET|POST")
-     * @param ObjectManager em
-     * @param Operation $operation
+     * @Route("/planning/new.{id}", name="planning.new")
      * @param Request $request
+     * @param Planning $planning
      */
-    public function affecter(Request $request, Operation $operation)
+    public function newPlanning(Request $request, Planning $planning, OperationRepository $repository)
     {
-        $form = $this->createForm(OperationPlanningType::class, $operation, [
-            'action' => $this->generateUrl('planning.affecter', ['id' => $operation->getId()]),
+
+        $operation = new Operation();
+        $form = $this->createForm(OperationQuaiType::class, $operation, [
+            'action' => $this->generateUrl('planning.new', ['id' => $planning->getId()]),
         ]);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $operation->setOperation(5);
-            $operation->setDateCreation(new \DateTime());
+            $operationRe = $repository->getSearchRemorque($request->request->get('operation_quai')['remorque']);
+            if($operationRe) {
+                $operationRe->setParking(NULL);
+                $operationRe->setTraction(NULL);
+                $operationRe->setOperation(2);
+                $operationRe->setPlanning($planning);
+            }
+            else {
+                $operation->setOperation(2);
+                $operation->setPlanning($planning);
+                $this->em->persist($operation);
+            }
             $this->em->flush();
-            //$this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> à été mise sur le parking : <strong>'.$operation->getParking()->getDenomination().'</strong>');
+            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> a étais affecté a la tournée <strong>'.$planning->getTournee().'</strong>');
             return $this->redirectToRoute('planning');
         }
 
         return $this->render('frontend/planning/_form.html.twig', [
             'form' => $form->createView(),
-            'operation' => $operation,
+            'planning' => $planning,
+
         ]);
     }
 
+
+    /**
+     * @Route("/planning/modifier.{id}", name="planning.editer")
+     * @param Operation $operation
+     * @param Request $request
+     */
+    public function editerPlanning(Request $request, Operation $operation)
+    {
+        $form = $this->createForm(OperationQuaiType::class, $operation, [
+            'action' => $this->generateUrl('traction.editer', ['id' => $operation->getId()]),
+        ]);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $operation->setParking(NULL);
+            $operation->setPlanning(NULL);
+            $this->em->flush();
+            //$this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');
+            return $this->redirectToRoute('traction');
+        }
+
+        return $this->render('frontend/traction/_form.html.twig', [
+            'form' => $form->createView(),
+            'operation' => $operation
+        ]);
+    }
 }

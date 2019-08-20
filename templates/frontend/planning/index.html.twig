@@ -13,6 +13,7 @@
                 <th>Tracteur</th>
                 <th>Affectation</th>
                 <th>Remorque</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +24,7 @@
                 <td>{{ planning.tracteur }}</td>
                 <td>
                     {% if planning.operation %}
-                        {{ planning.operation.traction.affectation }}
+
                     {% endif %}
                 </td>
                 <td>
@@ -31,9 +32,54 @@
                         {{ planning.operation.remorque.remorque }}
                     {% endif %}
                 </td>
+                <td>
+                    {% if planning.operation %}
+                        {% if planning.operation.operation == 2 and is_granted('ROLE_QUAI') %}
+                            <a class="btn btn-primary" href="{{ path('operation.tournee', {id: planning.operation.id}) }}">En tournée</a>
+                            <a class="btn btn-primary" href="{{ path('operation.parque', {id: planning.operation.id}) }}">Parqué</a>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalPlanning" data-operation="modif" data-id="{{ planning.operation.id }}">Modifier</button>
+                        {% elseif planning.operation.operation == 3 and is_granted('ROLE_PARKING') %}
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ planning.operation.id }}">Parquer</button>
+                        {% endif %}
+                    {% elseif is_granted('ROLE_QUAI') %}
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalPlanning" data-operation="add" data-id="{{ planning.id }}">Ajouter</button>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+{{ include('frontend/inc/modalParquer.html.twig') }}
+<!-- Modal traction -->
+<div class="modal fade" id="modalPlanning" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $('#modalPlanning').on('shown.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const ope = button.attr('data-operation');
+        const id = button.attr('data-id');
+        if(ope == 'add') {
+            var url = "{{ (path('planning.new', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        }
+        else {
+            var url = "{{ (path('planning.editer', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        }
+        url = url.replace("ReplaceMeWithCorrectValue", id);
+        var modal = $(this);
+        $.ajax({
+            url: url,
+            success: function(data) {
+                modal.find('.modal-content').html(data);
+            }
+        });
+    });
+    </script>
 {% endblock %}

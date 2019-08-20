@@ -58,32 +58,4 @@ class ParkingController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-    /**
-     * @Route("/parquer.{id}", name="parking.parquer")
-     * @param Operation $operation
-     * @param Request $request
-     */
-    public function parquer(Request $request, Operation $operation)
-    {
-
-        $form = $this->createForm(OperationParkingType::class, $operation, [
-            'action' => $this->generateUrl('parking.parquer', ['id' => $operation->getId()]),
-        ]);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $operation->setOperation(4);
-            $operation->setQuai(NULL);
-            $operation->setDateCreation(new \DateTime());
-            $this->em->flush();
-            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> à été mise sur le parking : <strong>'.$operation->getParking()->getDenomination().'</strong>');
-            return $this->redirectToRoute('parking');
-        }
-
-        return $this->render('frontend/parking/_form.html.twig', [
-            'form' => $form->createView(),
-            'operation' => $operation,
-        ]);
-    }
 }

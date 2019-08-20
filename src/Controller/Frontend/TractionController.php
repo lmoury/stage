@@ -50,20 +50,6 @@ class TractionController extends AbstractController
 
 
     /**
-     * @Route("/traction/deplacer.{id}", name="traction.terminer", methods="GET|POST")
-     * @param ObjectManager em
-     * @param Operation $operation
-     */
-    public function terminer(Operation $operation)
-    {
-        $operation->setOperation(3);
-        $this->em->flush();
-        $this->addFlash('success', 'Opération terminé, la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> peux etre deplacé');
-        return $this->redirectToRoute('traction');
-    }
-
-
-    /**
      * @Route("/traction/new.{id}", name="traction.new")
      * @param Request $request
      * @param Traction $traction
@@ -82,6 +68,7 @@ class TractionController extends AbstractController
             $operationRe = $repository->getSearchRemorque($request->request->get('operation_quai')['remorque']);
             if($operationRe) {
                 $operationRe->setParking(NULL);
+                $operationRe->setPlanning(NULL);
                 $operationRe->setOperation(2);
                 $operationRe->setTraction($traction);
             }
@@ -116,6 +103,8 @@ class TractionController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $operation->setParking(NULL);
+            $operation->setPlanning(NULL);
             $this->em->flush();
             //$this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');
             return $this->redirectToRoute('traction');

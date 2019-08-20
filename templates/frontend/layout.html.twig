@@ -45,7 +45,7 @@
             $('#modalParquer').on('shown.bs.modal', function (event) {
                   const button = $(event.relatedTarget);
                   const idQuai = button.attr('data-operation-id');
-                  let url = "{{ (path('parking.parquer', {id: 'ReplaceMeWithCorrectValue'})) }}";
+                  let url = "{{ (path('operation.parquer', {id: 'ReplaceMeWithCorrectValue'})) }}";
                   url = url.replace("ReplaceMeWithCorrectValue", idQuai);
                 var modal = $(this);
                 $.ajax({

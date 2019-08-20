@@ -38,11 +38,11 @@
                 <td>
                     {% if traction.operation %}
                         {% if traction.operation.operation == 2 and is_granted('ROLE_QUAI') %}
-                            <a class="btn btn-primary" href="{{ path('traction.terminer', {id: traction.operation.id}) }}">Terminer</a>
+                            <a class="btn btn-primary" href="{{ path('operation.tournee', {id: traction.operation.id}) }}">En tournée</a>
+                            <a class="btn btn-primary" href="{{ path('operation.parque', {id: traction.operation.id}) }}">Parqué</a>
                             <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="modif" data-id="{{ traction.operation.id }}">Modifier</button>
                         {% elseif traction.operation.operation == 3 and is_granted('ROLE_PARKING') %}
                             <button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ traction.operation.id }}">Parquer</button>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalPlanning" data-id="{{ traction.operation.id }}">Affecter</button>
                         {% endif %}
                     {% elseif is_granted('ROLE_QUAI') %}
                         <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="add" data-id="{{ traction.id }}">Ajouter</button>
@@ -54,12 +54,6 @@
     </table>
 </div>
 {{ include('frontend/inc/modalParquer.html.twig') }}
-<div class="modal fade" id="modalPlanning" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        </div>
-    </div>
-</div>
 <!-- Modal traction -->
 <div class="modal fade" id="modalTraction" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -71,20 +65,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-    $('#modalPlanning').on('shown.bs.modal', function (event) {
-          const button = $(event.relatedTarget);
-          const id = button.attr('data-id');
-          let url = "{{ (path('planning.affecter', {id: 'ReplaceMeWithCorrectValue'})) }}";
-          url = url.replace("ReplaceMeWithCorrectValue", id);
-        var modal = $(this);
-        $.ajax({
-            url: url,
-            success: function(data) {
-                console.log('AJAX');
-                modal.find('.modal-content').html(data);
-            }
-        });
-    });
     $('#modalTraction').on('shown.bs.modal', function (event) {
         const button = $(event.relatedTarget);
         const ope = button.attr('data-operation');
