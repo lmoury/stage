@@ -5,8 +5,6 @@
 {% block body %}
 <h1 class="text-center mb-4">Listing des parking</h1>
 
-<button class="btn btn-primary mb-4" data-toggle="modal" data-target="#modalParkingRemorque">Ajouter une remorque</button>
-
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -25,31 +23,20 @@
         <table class="table" id="tableSearch">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Remorque</th>
                     <th>Parking</th>
                     <th>Date mise en parking</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                     {% for parking in parkings %}
                 {% for operation in parking.operations %}
                 <tr>
-                    <td>{{ loop.index }}</td>
                     <td>
-                        <a href="#" data-title="Remorque" data-toggle="modal" data-target="#modalRemorque{{ operation.remorque.id }}" >
-                            {{ operation.remorque.remorque }}
-                        </a>
-                        {{ include('frontend/inc/modalRemorque.html.twig', {id: operation.remorque.id, remorque: operation.remorque.remorque, immatriculation: operation.remorque.immatriculation, type: operation.remorque.type.denomination}) }}
+                        {{ operation.remorque.remorque }}
                     </td>
                     <td>{{ parking.denomination }}</td>
                     <td>{{ operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
-                    <td>
-                        {% if is_granted('ROLE_PARKING') %}
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ operation.id }}">Modification</button>
-                        {% endif %}
-                    </td>
                 </tr>
                 {% endfor %}
                 {% endfor %}
@@ -61,73 +48,22 @@
         <table class="table tableSearch">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Remorque</th>
                     <th>Date mise en parking</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for operation in parking.operations %}
                 <tr>
-                    <td>{{ loop.index }}</td>
                     <td>
-                        <a href="#" data-title="Remorque" data-toggle="modal" data-target="#remorque{{ operation.remorque.id }}" >
-                            {{ operation.remorque.remorque }}
-                        </a>
-                        {{ include('frontend/inc/modalRemorque.html.twig', {id: operation.remorque.id, remorque: operation.remorque.remorque, immatriculation: operation.remorque.immatriculation, type: operation.remorque.type.denomination}) }}
+                        {{ operation.remorque.remorque }}
                     </td>
                     <td>{{ operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}</td>
-                    <td>
-                        {% if is_granted('ROLE_PARKING') %}
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ operation.id }}">Modification</button>
-                        {% endif %}
-                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
     {% endfor %}
-</div>
-{{ include('frontend/inc/modalParquer.html.twig') }}
-<!-- Modal -->
-<div class="modal fade" id="modalParkingRemorque" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalTitle">
-                    <strong>Ajouter une remorque à un parking</strong><br/>
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{ form_start(form) }}
-                <div class="mb-2">Veuillez choisir une remorque :</div>
-                <div class="row">
-                    <div class="col-md-6">
-                        {{ form_widget(form.parking) }}
-                        {{ form_errors(form.parking) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_widget(form.remorque) }}
-                        {{ form_errors(form.remorque) }}
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col-md-12">
-                        {{ form_rest(form) }}
-                        <div class="text-center btn-container">
-                            <button class="btn btn-primary">{{ button|default('Ajouter')}}</button>
-                        </div>
-                    </div>
-                </div>
-                {{ form_end(form) }}
-            </div>
-        </div>
-    </div>
 </div>
 {% endblock %}
