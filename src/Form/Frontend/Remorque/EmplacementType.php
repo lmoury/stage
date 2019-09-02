@@ -1,25 +1,22 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Frontend\Remorque;
 
-use App\Entity\Remorque;
-use App\Entity\RemorqueType;
+use App\Entity\Operation;
+use App\Entity\Parking;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class RemorquesType extends AbstractType
+class EmplacementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('remorque')
-            ->add('immatriculation')
-            ->add('type', EntityType::class, [
-                'class' => RemorqueType::class,
-                'choice_label' => 'denomination'
+            ->add('parking', EntityType::class, [
+                'class' => Parking::class,
+                'choice_label' => 'denomination',
             ])
         ;
     }
@@ -27,7 +24,7 @@ class RemorquesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Remorque::class,
+            'data_class' => Operation::class,
         ]);
     }
 }

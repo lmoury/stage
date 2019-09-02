@@ -24,7 +24,6 @@
     <table class="table table-bordered table-responsive text-center" id="tableUsers">
         <thead>
             <tr>
-                <th>#</th>
                 <th>login</th>
                 <th>Nom</th>
                 <th>Prenom</th>
@@ -35,12 +34,11 @@
         <tbody>
             {% for user in users %}
             <tr>
-                <td>{{ loop.index }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.nom }}</td>
                 <td>{{ user.prenom }}</td>
                 <td>{{ user.roleType }}</td>
-                <td><a class="btn btn-primary" href="{{ path('admin.utilisateur.editer', {id: user.id}) }}">Modification</a></td>
+                <td><a class="btn btn-primary" href="{{ path('admin.utilisateur.editer', {id: user.id}) }}">Modifier</a></td>
             </tr>
             {% endfor %}
         </tbody>

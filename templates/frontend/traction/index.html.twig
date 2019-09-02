@@ -8,10 +8,8 @@
     <table class="table" id="tableSearch">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Affectation</th>
                 <th>Porte</th>
-                <th>Heure de mise à quai</th>
                 <th>Remorque</th>
                 <th>Action</th>
             </tr>
@@ -19,14 +17,8 @@
         <tbody>
             {% for traction in tractions %}
             <tr>
-                <td>{{ loop.index }}</td>
                 <td>{{ traction.affectation }}</td>
                 <td>{{ traction.porte }}</td>
-                <td>
-                    {% if traction.operation and traction.operation.planning == null %}
-                        {{ traction.operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}
-                    {% endif %}
-                </td>
                 <td>
                     {% if traction.operation and traction.operation.planning == null %}
                     <a href="#" data-title="Remorque" data-toggle="modal" data-target="#modalRemorque{{ traction.operation.remorque.id }}" >
@@ -37,15 +29,15 @@
                 </td>
                 <td>
                     {% if traction.operation %}
-                        {% if traction.operation.operation == 2 and is_granted('ROLE_QUAI') %}
-                            <a class="btn btn-primary" href="{{ path('operation.tournee', {id: traction.operation.id}) }}">En tournée</a>
-                            <a class="btn btn-primary" href="{{ path('operation.parque', {id: traction.operation.id}) }}">Parqué</a>
+                        {% if traction.operation.operation == 2 and is_granted('ROLE_EMPLOYE') %}
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="add" data-id="{{ traction.id }}">Affectation</button>
                             <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="modif" data-id="{{ traction.operation.id }}">Modifier</button>
-                        {% elseif traction.operation.operation == 3 and is_granted('ROLE_PARKING') %}
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalParquer" data-operation-id="{{ traction.operation.id }}">Parquer</button>
                         {% endif %}
-                    {% elseif is_granted('ROLE_QUAI') %}
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="add" data-id="{{ traction.id }}">Ajouter</button>
+                        {% if traction.operation.quai == null and is_granted('ROLE_PARKING') %}
+                            <a class="btn btn-primary" href="{{ path('remorques.aquai', {id: traction.operation.id}) }}">A quai</a>
+                        {% endif %}
+                    {% elseif is_granted('ROLE_EMPLOYE') %}
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="add" data-id="{{ traction.id }}">Affectation</button>
                     {% endif %}
                 </td>
             </tr>

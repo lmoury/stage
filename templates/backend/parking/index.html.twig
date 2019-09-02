@@ -23,7 +23,6 @@
     <table class="table table-bordered table-responsive text-center" id="tableSearch">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Parking</th>
                 <th>Nb remorques</th>
                 <th>Action</th>
@@ -32,7 +31,6 @@
         <tbody>
             {% for parking in parkings %}
             <tr>
-                <td>{{ loop.index }}</td>
                 <td>
                     <a class="text-right mb-4" href="#" data-toggle="collapse" data-target="#demo{{ parking.id }}">{{ parking.denomination }}</a>
                     <div id="demo{{ parking.id }}" class="collapse">

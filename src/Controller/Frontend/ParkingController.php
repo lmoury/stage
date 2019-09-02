@@ -44,7 +44,8 @@ class ParkingController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $operation->setOperation(4);
-            $operation->setQuai(NULL);
+            $operation->setTraction(NULL);
+            $operation->setPlanning(NULL);
             $operation->setDateCreation(new \DateTime());
             $this->em->flush();
             $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> à été mise sur le parking : <strong>'.$operation->getParking()->getDenomination().'</strong>');

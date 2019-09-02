@@ -8,7 +8,6 @@
     <table class="table" id="tableSearch">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Remorque</th>
                 <th>Immatriculation</th>
                 <th>Type</th>
@@ -19,7 +18,6 @@
         <tbody>
             {% for remorque in remorques %}
             <tr>
-                <td>{{ loop.index }}</td>
                 <td>{{ remorque.remorque }}</td>
                 <td>{{ remorque.immatriculation }}</td>
                 <td>{{ remorque.type.denomination }}</td>
@@ -31,18 +29,32 @@
                         {% elseif remorque.operation.traction %}
                             Affectation : <strong>{{ remorque.operation.traction.affectation}}</strong><br/>
                             Quai numéro : <strong>{{ remorque.operation.traction.porte }}</strong><br/>
+                            Le {{ remorque.operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}
+                        {% elseif remorque.operation.planning %}
+                            Affectation : <strong>{{ remorque.operation.affectation}}</strong><br/>
+                            Tournée : <strong>{{ remorque.operation.planning.tournee }}</strong><br/>
+                        {% elseif remorque.operation.operation == 5 %}
+                            Affectation : <strong>{{ remorque.operation.affectation}}</strong><br/>
                         {% endif %}
-                        Le {{ remorque.operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}
+                    {% elseif remorque.maintenance %}
+                        Bloquée : <strong>{{ remorque.maintenanceRaison}}</strong><br/>
+                    {% elseif remorque.vide %}
+                        Vide
                     {% else %}
-                        Aucune opération
+                        Chargée
                     {% endif %}
                 </td>
                 <td>
                     {% if is_granted('ROLE_EMPLOYE') %}
-                    <a class="btn btn-primary" href="{{ path('admin.remorque.editer', {id: remorque.id}) }}">Profil</a>
+                        {% if remorque.maintenance %}
+                        <a class="btn btn-primary" href="{{ path('remorques.debloquer', {id: remorque.id})}}">Débloquer</a>
+                        {% else %}
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#modalBloquer" data-id="{{ remorque.id }}" >Bloquer</button>
+                        {% endif %}
                     {% endif %}
-                    {% if remorque.operation != null and remorque.operation.operation == 3 and is_granted('ROLE_PARKING') %}
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="addParking({{ remorque.operation.id }})">Parquer</button>
+                    {% if is_granted('ROLE_PARKING') %}
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalEtat" data-id="{{ remorque.id }}" >Etat</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalEmplacement" data-id="{{ remorque.id }}" >Emplacement</button>
                     {% endif %}
                 </td>
             </tr>
@@ -50,4 +62,71 @@
         </tbody>
     </table>
 </div>
+<!-- Modal bloquer -->
+<div class="modal fade" id="modalBloquer" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!-- Modal etat -->
+<div class="modal fade" id="modalEtat" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!-- Modal emplacement -->
+<div class="modal fade" id="modalEmplacement" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $('#modalBloquer').on('shown.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const id = button.attr('data-id');
+        var url = "{{ (path('remorques.bloquer', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        url = url.replace("ReplaceMeWithCorrectValue", id);
+        var modal = $(this);
+        $.ajax({
+            url: url,
+            success: function(data) {
+                modal.find('.modal-content').html(data);
+            }
+        });
+    });
+
+    $('#modalEtat').on('shown.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const id = button.attr('data-id');
+        var url = "{{ (path('remorques.etat', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        url = url.replace("ReplaceMeWithCorrectValue", id);
+        var modal = $(this);
+        $.ajax({
+            url: url,
+            success: function(data) {
+                modal.find('.modal-content').html(data);
+            }
+        });
+    });
+
+    $('#modalEmplacement').on('shown.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const id = button.attr('data-id');
+        var url = "{{ (path('remorques.emplacement', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        url = url.replace("ReplaceMeWithCorrectValue", id);
+        var modal = $(this);
+        $.ajax({
+            url: url,
+            success: function(data) {
+                modal.find('.modal-content').html(data);
+            }
+        });
+    });
+    </script>
 {% endblock %}

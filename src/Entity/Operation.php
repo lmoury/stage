@@ -61,6 +61,11 @@ class Operation
      */
     private $planning;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $affectation;
+
     public function __construct() {
         $this->date_creation = new \DateTime();
     }
@@ -155,6 +160,18 @@ class Operation
     public function setPlanning(?Planning $planning): self
     {
         $this->planning = $planning;
+
+        return $this;
+    }
+
+    public function getAffectation(): ?string
+    {
+        return $this->affectation;
+    }
+
+    public function setAffectation(?string $affectation): self
+    {
+        $this->affectation = $affectation;
 
         return $this;
     }

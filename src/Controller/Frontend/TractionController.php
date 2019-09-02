@@ -6,8 +6,7 @@ use App\Entity\Operation;
 use App\Entity\Traction;
 use App\Repository\TractionRepository;
 use App\Repository\OperationRepository;
-use App\Form\OperationParkingType;
-use App\Form\OperationQuaiType;
+use App\Form\OperationTractionType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,22 +57,24 @@ class TractionController extends AbstractController
     {
 
         $operation = new Operation();
-        $form = $this->createForm(OperationQuaiType::class, $operation, [
+        $form = $this->createForm(OperationTractionType::class, $operation, [
             'action' => $this->generateUrl('traction.new', ['id' => $traction->getId()]),
         ]);
         $form->handleRequest($request);
 
 
         if($form->isSubmitted() && $form->isValid()) {
-            $operationRe = $repository->getSearchRemorque($request->request->get('operation_quai')['remorque']);
+            $operationRe = $repository->getSearchRemorque($request->request->get('operation_traction')['remorque']);
             if($operationRe) {
                 $operationRe->setParking(NULL);
                 $operationRe->setPlanning(NULL);
                 $operationRe->setOperation(2);
+                $operationRe->setAffectation($traction->getAffectation());
                 $operationRe->setTraction($traction);
             }
             else {
                 $operation->setOperation(2);
+                $operation->setAffectation($traction->getAffectation());
                 $operation->setTraction($traction);
                 $this->em->persist($operation);
             }
@@ -97,7 +98,7 @@ class TractionController extends AbstractController
      */
     public function editerTraction(Request $request, Operation $operation)
     {
-        $form = $this->createForm(OperationQuaiType::class, $operation, [
+        $form = $this->createForm(OperationTractionType::class, $operation, [
             'action' => $this->generateUrl('traction.editer', ['id' => $operation->getId()]),
         ]);
         $form->handleRequest($request);
@@ -114,5 +115,21 @@ class TractionController extends AbstractController
             'form' => $form->createView(),
             'operation' => $operation
         ]);
+    }
+
+
+    /**
+     * @Route("/remorques/aquai.{id}", name="remorques.aquai", methods="GET|POST")
+     * @param ObjectManager $this->em
+     * @param Operation $operation
+     */
+    public function aQuai(Operation $operation)
+    {
+        dump($operation->getTraction()->getPorte());
+        die();
+        // $operation->setQuai();
+        // $this->em->flush();
+        // $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> a étais mise à quai </strong>');
+        // return $this->redirectToRoute('remorques');
     }
 }

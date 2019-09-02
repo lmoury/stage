@@ -53,6 +53,16 @@ class Remorque
     private $maintenance = false;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $maintenance_raison;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default" : true})
+     */
+    private $vide = true;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Operation", mappedBy="remorque", cascade={"persist", "remove"})
      */
     private $operation;
@@ -130,6 +140,30 @@ class Remorque
     public function setMaintenance(bool $maintenance): self
     {
         $this->maintenance = $maintenance;
+
+        return $this;
+    }
+
+    public function getMaintenanceRaison(): ?string
+    {
+        return $this->maintenance_raison;
+    }
+
+    public function setMaintenanceRaison(string $maintenance_raison): self
+    {
+        $this->maintenance_raison = $maintenance_raison;
+
+        return $this;
+    }
+
+    public function getVide(): ?bool
+    {
+        return $this->vide;
+    }
+
+    public function setVide(bool $vide): self
+    {
+        $this->vide = $vide;
 
         return $this;
     }

@@ -3,7 +3,7 @@
         {% if operation.quai %}
         Quai numéro : <strong>{{ operation.quai.numero }}</strong><br/>
         {% else %}
-        
+
         {% endif %}
         Remorque : <strong>{{ operation.remorque.Remorque }}</strong><br/>
         Immatriculation : <strong>{{ operation.remorque.immatriculation }}</strong>
@@ -16,17 +16,16 @@
     {{ form_start(form) }}
     <div class="mb-2">Veuillez choisir un parking :</div>
     <div class="row">
-            <div class="col-md-9">
-                {{ form_widget(form.parking) }}
-                {{ form_errors(form.parking) }}
+        <div class="col-md-9">
+            {{ form_widget(form.parking) }}
+            {{ form_errors(form.parking) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_rest(form) }}
+            <div class="text-center btn-container">
+                <button class="btn btn-primary">{{ button|default('Ajouter')}}</button>
             </div>
-            <div class="col-md-3">
-                {{ form_rest(form) }}
-                <div class="text-center btn-container">
-                    <button class="btn btn-primary">{{ button|default('Ajouter')}}</button>
-                </div>
-            </div>
-
+        </div>
     </div>
     {{ form_end(form) }}
 
