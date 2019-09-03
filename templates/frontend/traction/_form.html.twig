@@ -3,9 +3,9 @@
         Quai numéro :
         <strong>
             {% if traction is defined %}
-            {{ traction.porte }}
+            {{ traction.quai.numero }}
             {% else %}
-            {{ operation.traction.porte }}
+            {{ operation.traction.quai.numero }}
             {% endif %}
         </strong><br/>
     </h5>

@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class EmplacementType extends AbstractType
+class EmplacementParkingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

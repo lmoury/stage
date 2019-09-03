@@ -1,0 +1,57 @@
+{% extends 'backend/layout.html.twig' %}
+
+{% block title %} Listing des planning {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="/assets/plugins/dataTable/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block titrePage %}Listing des planning{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">Planning</li>
+{% endblock %}
+
+{% block body %}
+
+<div class="clearfix">
+    <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
+    <a href="{{ path('admin.planning.new') }}" class="btn btn-primary mb-3">Ajouter</a>
+</div>
+
+<div class="content-section">
+    <table class="table table-bordered table-responsive text-center" id="tableUsers">
+        <thead>
+            <tr>
+                <th>Tournée</th>
+                <th>Chauffeur</th>
+                <th>Tracteur</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plan in planning %}
+            <tr>
+                <td>{{ plan.tournee }}</td>
+                <td>{{ plan.chauffeur }}</td>
+                <td>{{ plan.tracteur }}</td>
+                <td><a class="btn btn-primary" href="{{ path('admin.planning.editer', {id: plan.id}) }}">Modifer</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="/assets/plugins/dataTable/js/jquery.dataTables.min.js"></script>
+<script src="/assets/plugins/dataTable/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#tableUsers').DataTable();
+} );
+</script>
+{% endblock %}

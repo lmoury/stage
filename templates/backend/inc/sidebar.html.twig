@@ -31,10 +31,10 @@
             <a href="{{ path('admin.parking.index') }}">Parkings</a>
         </li>
         <li class="{% if current_url is defined and current_url == 'planning' %}active{% endif %}">
-            <a href="">Planning</a>
+            <a href="{{ path('admin.planning.index') }}">Planning</a>
         </li>
         <li class="{% if current_url is defined and current_url == 'traction' %}active{% endif %}">
-            <a href="">Tractions</a>
+            <a href="{{ path('admin.traction.index') }}">Tractions</a>
         </li>
         {% if is_granted('ROLE_ADMIN') %}
         <li class="{% if current_url is defined and current_url == 'user' %}active{% endif %}">

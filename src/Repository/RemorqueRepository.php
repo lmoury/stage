@@ -32,12 +32,75 @@ class RemorqueRepository extends ServiceEntityRepository
             ->addSelect('o', 'p')
             ->leftJoin('o.parking', 'p')
             ->addSelect('o', 'q')
-            ->leftJoin('o.quai', 'q')            
+            ->leftJoin('o.quai', 'q')
+            ->leftJoin('o.planning', 'pl')
+            ->addSelect('o', 'pl')
+            ->leftJoin('o.traction', 'tr')
+            ->addSelect('o', 'tr')
+            ->leftJoin('tr.quai', 'qu')
+            ->addSelect('tr', 'qu')
             ->orderBy('r.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
+
+
+    /**
+   * @return Remorque[] Returns an array of Remorque objects
+   */
+   public function getRemorquesParking()
+   {
+       return $this->createQueryBuilder('r')
+           ->addSelect('r', 't')
+           ->leftJoin('r.type', 't')
+           ->addSelect('r', 'o')
+           ->leftJoin('r.operation', 'o')
+           ->addSelect('o', 'p')
+           ->leftJoin('o.parking', 'p')
+           ->addSelect('o', 'q')
+           ->leftJoin('o.quai', 'q')
+           ->leftJoin('o.traction', 'tr')
+           ->addSelect('o', 'tr')
+           ->leftJoin('o.planning', 'pl')
+           ->addSelect('o', 'pl')
+           ->andWhere('o.traction is null')
+           ->andWhere('o.planning is null')
+           ->andWhere('r.maintenance = false')
+           ->orderBy('r.id', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
+
+
+   /**
+  * @return Remorque[] Returns an array of Remorque objects
+  */
+  public function getArrivages()
+  {
+      return $this->createQueryBuilder('r')
+          ->addSelect('r', 't')
+          ->leftJoin('r.type', 't')
+          ->addSelect('r', 'o')
+          ->leftJoin('r.operation', 'o')
+          ->addSelect('o', 'p')
+          ->leftJoin('o.parking', 'p')
+          ->addSelect('o', 'q')
+          ->leftJoin('o.quai', 'q')
+          ->leftJoin('o.traction', 'tr')
+          ->addSelect('o', 'tr')
+          ->leftJoin('o.planning', 'pl')
+          ->addSelect('o', 'pl')
+          ->andWhere('o.quai is not null')
+          ->andWhere('o.traction is null')
+          ->andWhere('o.planning is null')
+          ->andWhere('r.maintenance = false')
+          ->orderBy('r.id', 'ASC')
+          ->getQuery()
+          ->getResult()
+      ;
+  }
 
     /*
     public function findOneBySomeField($value): ?Remorque

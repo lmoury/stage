@@ -22,14 +22,15 @@ class Traction
     private $affectation;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $porte;
-
-    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Operation", mappedBy="traction", cascade={"persist", "remove"})
      */
     private $operation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Quai", inversedBy="tractions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $quai;
 
     public function getId(): ?int
     {
@@ -48,18 +49,6 @@ class Traction
         return $this;
     }
 
-    public function getPorte(): ?string
-    {
-        return $this->porte;
-    }
-
-    public function setPorte(string $porte): self
-    {
-        $this->porte = $porte;
-
-        return $this;
-    }
-
     public function getOperation(): ?Operation
     {
         return $this->operation;
@@ -74,6 +63,18 @@ class Traction
         if ($newTraction !== $operation->getTraction()) {
             $operation->setTraction($newTraction);
         }
+
+        return $this;
+    }
+
+    public function getQuai(): ?Quai
+    {
+        return $this->quai;
+    }
+
+    public function setQuai(?Quai $quai): self
+    {
+        $this->quai = $quai;
 
         return $this;
     }

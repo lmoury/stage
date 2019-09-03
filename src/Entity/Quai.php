@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,6 +35,16 @@ class Quai
      * @ORM\OneToOne(targetEntity="App\Entity\Operation", mappedBy="quai", cascade={"persist", "remove"})
      */
     private $operation;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Traction", mappedBy="quai")
+     */
+    private $tractions;
+
+    public function __construct()
+    {
+        $this->tractions = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -77,6 +89,37 @@ class Quai
         $newQuai = $operation === null ? null : $this;
         if ($newQuai !== $operation->getQuai()) {
             $operation->setQuai($newQuai);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Traction[]
+     */
+    public function getTractions(): Collection
+    {
+        return $this->tractions;
+    }
+
+    public function addTraction(Traction $traction): self
+    {
+        if (!$this->tractions->contains($traction)) {
+            $this->tractions[] = $traction;
+            $traction->setQuai($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTraction(Traction $traction): self
+    {
+        if ($this->tractions->contains($traction)) {
+            $this->tractions->removeElement($traction);
+            // set the owning side to null (unless already changed)
+            if ($traction->getQuai() === $this) {
+                $traction->setQuai(null);
+            }
         }
 
         return $this;

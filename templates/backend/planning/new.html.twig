@@ -1,0 +1,16 @@
+{% extends 'backend/layout.html.twig' %}
+
+{% block title %} Ajouter une tournée {{ parent() }}{% endblock %}
+
+{% block titrePage %}Ajouter une tournée{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ path('admin.planning.index') }}">Planning</a></li>
+<li class="breadcrumb-item">Ajouter une tournée</li>
+{% endblock %}
+
+{% block body %}
+<div class="content-section p-3">
+    {{ include('backend/planning/_form.html.twig', {form: form, button:'Ajouter une tournée'}) }}
+</div>
+{% endblock %}

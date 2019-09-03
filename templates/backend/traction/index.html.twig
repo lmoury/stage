@@ -1,0 +1,55 @@
+{% extends 'backend/layout.html.twig' %}
+
+{% block title %} Listing des tractions {{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="/assets/plugins/dataTable/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block titrePage %}Listing des tractions{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">Traction</li>
+{% endblock %}
+
+{% block body %}
+
+<div class="clearfix">
+    <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
+    <a href="{{ path('admin.traction.new') }}" class="btn btn-primary mb-3">Ajouter</a>
+</div>
+
+<div class="content-section">
+    <table class="table table-bordered table-responsive text-center" id="tableUsers">
+        <thead>
+            <tr>
+                <th>Affectation</th>
+                <th>Porte</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for traction in tractions %}
+            <tr>
+                <td>{{ traction.affectation }}</td>
+                <td>{{ traction.quai.numero }}</td>
+                <td><a class="btn btn-primary" href="{{ path('admin.traction.editer', {id: traction.id}) }}">Modifer</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="/assets/plugins/dataTable/js/jquery.dataTables.min.js"></script>
+<script src="/assets/plugins/dataTable/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#tableUsers').DataTable();
+} );
+</script>
+{% endblock %}

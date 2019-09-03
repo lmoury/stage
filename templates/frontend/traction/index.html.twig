@@ -18,7 +18,7 @@
             {% for traction in tractions %}
             <tr>
                 <td>{{ traction.affectation }}</td>
-                <td>{{ traction.porte }}</td>
+                <td>{{ traction.quai.numero }}</td>
                 <td>
                     {% if traction.operation and traction.operation.planning == null %}
                     <a href="#" data-title="Remorque" data-toggle="modal" data-target="#modalRemorque{{ traction.operation.remorque.id }}" >
@@ -30,7 +30,7 @@
                 <td>
                     {% if traction.operation %}
                         {% if traction.operation.operation == 2 and is_granted('ROLE_EMPLOYE') %}
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="add" data-id="{{ traction.id }}">Affectation</button>
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="modif" data-id="{{ traction.operation.id }}">Affectation</button>
                             <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="modif" data-id="{{ traction.operation.id }}">Modifier</button>
                         {% endif %}
                         {% if traction.operation.quai == null and is_granted('ROLE_PARKING') %}

@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="miniature">Affectation : </label>
+            {{ form_widget(form.affectation, { 'attr': {'placeholder': 'Entrer une affectation'} }) }}
+            {{ form_errors(form.affectation) }}
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="miniature">Porte : </label>
+            {{ form_widget(form.quai, { 'attr': {'placeholder': 'Entrer le numéro de quai'} }) }}
+            {{ form_errors(form.quai) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    <div class="text-center btn-container">
+        <button class="btn btn-primary"><i class="fa fa-edit fa-lg" aria-hidden="true"></i>{{ button|default('Créer')}}</button>
+    </div>
+
+{{ form_end(form) }}

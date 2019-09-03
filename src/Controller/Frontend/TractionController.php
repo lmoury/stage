@@ -79,7 +79,7 @@ class TractionController extends AbstractController
                 $this->em->persist($operation);
             }
             $this->em->flush();
-            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> a étais affecté sur le quai <strong>'.$traction->getPorte().'</strong>');
+            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> a étais affecté sur le quai <strong>'.$traction->getQuai()->getNumero().'</strong>');
             return $this->redirectToRoute('traction');
         }
 
@@ -106,6 +106,7 @@ class TractionController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $operation->setParking(NULL);
             $operation->setPlanning(NULL);
+            $operation->setQuai(NULL);
             $this->em->flush();
             //$this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');
             return $this->redirectToRoute('traction');
@@ -125,11 +126,9 @@ class TractionController extends AbstractController
      */
     public function aQuai(Operation $operation)
     {
-        dump($operation->getTraction()->getPorte());
-        die();
-        // $operation->setQuai();
-        // $this->em->flush();
-        // $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> a étais mise à quai </strong>');
-        // return $this->redirectToRoute('remorques');
+        $operation->setQuai($operation->getTraction()->getQuai());
+        $this->em->flush();
+        $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> a étais mise à quai </strong>');
+        return $this->redirectToRoute('traction');
     }
 }

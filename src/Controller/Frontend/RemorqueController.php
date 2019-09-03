@@ -2,11 +2,14 @@
 
 namespace App\Controller\Frontend;
 
+use App\Entity\Operation;
 use App\Entity\Remorque;
 use App\Repository\RemorqueRepository;
 use App\Form\Frontend\Remorque\BloquerType;
 use App\Form\Frontend\Remorque\EtatType;
-use App\Form\Frontend\Remorque\EmplacementType;
+use App\Form\Frontend\Remorque\EmplacementParkingType;
+use App\Form\Frontend\Remorque\EmplacementQuaiType;
+use App\Repository\OperationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,7 +42,13 @@ class RemorqueController extends AbstractController
      */
     public function index()
     {
-        $remorques = $this->repository->getRemorques();
+        if($this->getUser()->getRole() == 3) {
+            $remorques = $this->repository->getRemorquesParking();
+        }
+        else {
+            $remorques = $this->repository->getRemorques();
+        }
+
         return $this->render('frontend/remorque/index.html.twig', [
             'current_url' => $this->current_url,
             'remorques' => $remorques,
@@ -124,21 +133,47 @@ class RemorqueController extends AbstractController
      * @param Request $request
      * @param Remorque $remorque
      */
-    public function emplacementRemorque(Request $request, Remorque $remorque)
+    public function emplacementRemorque(Request $request, Remorque $remorque, OperationRepository $opRepository)
     {
 
-        $form = $this->createForm(EmplacementType::class, $remorque, [
+        $operation = new Operation();
+
+        $formParking = $this->createForm(EmplacementParkingType::class, $operation, [
             'action' => $this->generateUrl('remorques.emplacement', ['id' => $remorque->getId()]),
         ]);
-        $form->handleRequest($request);
+        $formParking->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        $operation2 = new Operation();
+        $formQuai = $this->createForm(EmplacementQuaiType::class, $operation2, [
+            'action' => $this->generateUrl('remorques.emplacement', ['id' => $remorque->getId()]),
+        ]);
+        $formQuai->handleRequest($request);
+
+        if($formParking->isSubmitted() && $formParking->isValid()) {
+
+            $operationRe = $opRepository->getSearchRemorque($remorque->getId());
+            if($operationRe) {
+                $this->em->remove($operationRe);
+                $this->em->flush();
+            }
+                $operation = new Operation();
+                $operation->setRemorque($remorque);
+                $operation->setOperation(4);
+                $this->em->persist($operation);
+            $this->em->flush();
+            return $this->redirectToRoute('remorques');
+        }
+        if($formQuai->isSubmitted() && $formQuai->isValid()) {
+            $operation2->setRemorque($remorque);
+            $operation2->setOperation(2);
+            $this->em->persist($operation2);
             $this->em->flush();
             return $this->redirectToRoute('remorques');
         }
 
         return $this->render('frontend/remorque/form/emplacement.html.twig', [
-            'form' => $form->createView(),
+            'form' => $formParking->createView(),
+            'formQuai' => $formQuai->createView(),
             'remorque' => $remorque,
 
         ]);

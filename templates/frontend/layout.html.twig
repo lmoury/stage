@@ -42,20 +42,6 @@
                     "iDisplayLength": 250
                 });
             } );
-            $('#modalParquer').on('shown.bs.modal', function (event) {
-                  const button = $(event.relatedTarget);
-                  const idQuai = button.attr('data-operation-id');
-                  let url = "{{ (path('operation.parquer', {id: 'ReplaceMeWithCorrectValue'})) }}";
-                  url = url.replace("ReplaceMeWithCorrectValue", idQuai);
-                var modal = $(this);
-                $.ajax({
-                    url: url,
-                    success: function(data) {
-                        console.log('AJAX');
-                        modal.find('.modal-content').html(data);
-                    }
-                });
-            });
             </script>
        {% endblock %}
 

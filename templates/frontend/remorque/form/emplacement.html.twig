@@ -8,11 +8,11 @@
 </div>
 <div class="modal-body">
     {{ form_start(form) }}
-    <div class="mb-2 mt-2"></div>
+    <div class="mb-2 mt-2"> Parking : </div>
     <div class="row">
         <div class="col-md-9">
-            {{ form_widget(form.quai) }}
-            {{ form_errors(form.quai) }}
+            {{ form_widget(form.parking) }}
+            {{ form_errors(form.parking) }}
         </div>
         <div class="col-md-3">
             {{ form_rest(form) }}
@@ -22,4 +22,19 @@
         </div>
     </div>
     {{ form_end(form) }}
+    {{ form_start(formQuai) }}
+    <div class="mb-2 mt-2">Quai : </div>
+    <div class="row">
+        <div class="col-md-9">
+            {{ form_widget(formQuai.quai) }}
+            {{ form_errors(formQuai.quai) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_rest(formQuai) }}
+            <div class="text-center btn-container">
+                <button class="btn btn-primary">{{ button|default('Valider')}}</button>
+            </div>
+        </div>
+    </div>
+    {{ form_end(formQuai) }}
 </div>

@@ -1,0 +1,40 @@
+{% extends 'backend/layout.html.twig' %}
+
+{% block title %} Modification de l'affectation' {{ traction.affectation }} {{ parent() }}{% endblock %}
+
+{% block titrePage %}Modification de l'affectation {{ traction.affectation }}{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ path('admin.traction.index') }}">Tractions</a></li>
+<li class="breadcrumb-item">Modification de l'affectation {{ traction.affectation }}</li>
+{% endblock %}
+
+{% block body %}
+
+<div class="clearfix">
+    <a href="#" class="btn btn-danger mb-3 float-right" data-title="Delete" data-toggle="modal" data-target="#delete" ><i class="fa fa-trash"></i> Supprimer la remorque</a>
+</div>
+<!-- formulaire utilisateur -->
+<div class="content-section mb-4 p-4">
+    {{ include('backend/traction/_form.html.twig', {form: form, button:'Modifier la remorque'}) }}
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Veuillez confirmer la suppression ?</div>
+            </div>
+            <div class="modal-footer">
+            <form method="post" action="{{ path('admin.traction.delete', {id: traction.id})}}">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ traction.id) }}">
+                <button class="btn btn-danger">Supprimer</button>
+            </form>
+            <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Non</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

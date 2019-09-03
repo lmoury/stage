@@ -1,0 +1,76 @@
+{% extends 'frontend/layout.html.twig' %}
+
+{% block title %} Listing des arrivages {{ parent() }}{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-4">Listing des arrivages</h1>
+<a class="btn btn-primary mb-2" href="">Arrivages</a>
+{{ form_start(form) }}
+            {{ form_rest(form) }}
+            <div class="text-center btn-container">
+                <button class="btn btn-primary">{{ button|default('Valider')}}</button>
+            </div>
+        </div>
+
+</div>
+{{ form_end(form) }}
+<div class="content-section mb-4">
+    <table class="table" id="tableSearch">
+        <thead>
+            <tr>
+                <th>Remorque</th>
+                <th>Immatriculation</th>
+                <th>Quai</th>
+                <th>Etat</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for arrivage in arrivages %}
+            <tr>
+                <td>{{ arrivage.remorque }}</td>
+                <td>{{ arrivage.immatriculation }}</td>
+                <td>{{ arrivage.operation.quai.numero }}</td>
+                <td>
+                    {% if arrivage.vide %}
+                        Vide
+                    {% else %}
+                        Chargée
+                    {% endif %}
+                </td>
+                <td>
+                    {% if is_granted('ROLE_QUAI')  %}
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalEtat" data-id="{{ arrivage.id }}" >Etat</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- Modal etat -->
+<div class="modal fade" id="modalEtat" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $('#modalEtat').on('shown.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const id = button.attr('data-id');
+        var url = "{{ (path('arrivages.etat', {id: 'ReplaceMeWithCorrectValue'})) }}";
+        url = url.replace("ReplaceMeWithCorrectValue", id);
+        var modal = $(this);
+        $.ajax({
+            url: url,
+            success: function(data) {
+                modal.find('.modal-content').html(data);
+            }
+        });
+    });
+    </script>
+{% endblock %}

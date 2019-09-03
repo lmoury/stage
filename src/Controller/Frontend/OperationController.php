@@ -3,9 +3,12 @@
 namespace App\Controller\Frontend;
 
 use App\Entity\Operation;
-use App\Repository\TractionRepository;
+use App\Entity\Remorque;
+use App\Repository\RemorqueRepository;
 use App\Repository\OperationRepository;
 use App\Form\OperationParkingType;
+use App\Form\Frontend\Remorque\EtatType;
+use App\Form\Frontend\ArrivageType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,11 +23,11 @@ class OperationController extends AbstractController
     private $em;
 
     /**
-     * @var TractionRepository
+     * @var RemorqueRepository
      */
     private $repository;
 
-    public function __construct(ObjectManager $em, TractionRepository $repository)
+    public function __construct(ObjectManager $em, RemorqueRepository $repository)
     {
         $this->em = $em;
         $this->repository = $repository;
@@ -32,62 +35,56 @@ class OperationController extends AbstractController
 
 
     /**
-     * @Route("/operation/tournee.{id}", name="operation.tournee", methods="GET|POST")
-     * @param ObjectManager em
-     * @param Operation $operation
+     * @Route("/arrivages", name="arrivages.index", methods="GET|POST")
+     * @param RemorqueRepository $this->repository
      */
-    public function tournee(Operation $operation)
-    {
-        $operation->setOperation(5);
-        $operation->setTraction(null);
-        $operation->setPlanning(null);
-        $this->em->flush();
-        $this->addFlash('success', 'Opération terminé, la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> peux partir en tournée');
-        return $this->redirectToRoute('traction');
-    }
+     public function index(Request $request)
+     {
+         $operation = new Operation();
+         $form = $this->createForm(ArrivageType::class, $operation);
+         $form->handleRequest($request);
+
+         if($form->isSubmitted() && $form->isValid()) {
+             $operation->setParking(NULL);
+             $operation->setOperation(8);
+             $this->em->persist($operation);
+             $this->em->flush();
+             //$this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');
+             return $this->redirectToRoute('arrivages');
+         }
+         $arrivages = $this->repository->getArrivages();
+
+         return $this->render('frontend/arrivage/index.html.twig', [
+             'form' => $form->createView(),
+             //'current_url' => $this->current_url,
+             'arrivages' => $arrivages,
+         ]);
+     }
 
 
-    /**
-     * @Route("/operation/peuxetreparque.{id}", name="operation.parque", methods="GET|POST")
-     * @param ObjectManager em
-     * @param Operation $operation
-     */
-    public function peuxEtreParque(Operation $operation)
-    {
-        $operation->setOperation(3);
-        $this->em->flush();
-        $this->addFlash('success', 'Opération terminé, la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> peux etre parqué');
-        return $this->redirectToRoute('traction');
-    }
+     /**
+      * @Route("/arrivages/etat.{id}", name="arrivages.etat")
+      * @param ObjectManager $this->em
+      * @param Request $request
+      * @param Remorque $remorque
+      */
+     public function etatRemorque(Request $request, Remorque $remorque)
+     {
 
+         $form = $this->createForm(EtatType::class, $remorque, [
+             'action' => $this->generateUrl('arrivages.etat', ['id' => $remorque->getId()]),
+         ]);
+         $form->handleRequest($request);
 
-    /**
-     * @Route("operation/parquer.{id}", name="operation.parquer")
-     * @param Operation $operation
-     * @param Request $request
-     */
-    public function parquer(Request $request, Operation $operation)
-    {
+         if($form->isSubmitted() && $form->isValid()) {
+             $this->em->flush();
+             return $this->redirectToRoute('arrivages.index');
+         }
 
-        $form = $this->createForm(OperationParkingType::class, $operation, [
-            'action' => $this->generateUrl('operation.parquer', ['id' => $operation->getId()]),
-        ]);
-        $form->handleRequest($request);
+         return $this->render('frontend/remorque/form/etat.html.twig', [
+             'form' => $form->createView(),
+             'remorque' => $remorque,
 
-        if($form->isSubmitted() && $form->isValid()) {
-            $operation->setOperation(4);
-            $operation->setTraction(NULL);
-            $operation->setPlanning(NULL);
-            $operation->setDateCreation(new \DateTime());
-            $this->em->flush();
-            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> à été mise sur le parking : <strong>'.$operation->getParking()->getDenomination().'</strong>');
-            return $this->redirectToRoute('parking');
-        }
-
-        return $this->render('frontend/parking/_form.html.twig', [
-            'form' => $form->createView(),
-            'operation' => $operation,
-        ]);
-    }
-
+         ]);
+     }
 }

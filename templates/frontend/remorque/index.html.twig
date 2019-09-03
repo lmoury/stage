@@ -28,7 +28,7 @@
                             Parking : <strong>{{ remorque.operation.parking.denomination}}</strong><br/>
                         {% elseif remorque.operation.traction %}
                             Affectation : <strong>{{ remorque.operation.traction.affectation}}</strong><br/>
-                            Quai numéro : <strong>{{ remorque.operation.traction.porte }}</strong><br/>
+                            Quai numéro : <strong>{{ remorque.operation.traction.quai.numero }}</strong><br/>
                             Le {{ remorque.operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}
                         {% elseif remorque.operation.planning %}
                             Affectation : <strong>{{ remorque.operation.affectation}}</strong><br/>
@@ -52,7 +52,7 @@
                         <button class="btn btn-primary" data-toggle="modal" data-target="#modalBloquer" data-id="{{ remorque.id }}" >Bloquer</button>
                         {% endif %}
                     {% endif %}
-                    {% if is_granted('ROLE_PARKING') %}
+                    {% if is_granted('ROLE_PARKING')  %}
                     <button class="btn btn-primary" data-toggle="modal" data-target="#modalEtat" data-id="{{ remorque.id }}" >Etat</button>
                     <button class="btn btn-primary" data-toggle="modal" data-target="#modalEmplacement" data-id="{{ remorque.id }}" >Emplacement</button>
                     {% endif %}
