@@ -4,16 +4,10 @@
 
 {% block body %}
 <h1 class="text-center mb-4">Listing des arrivages</h1>
-<a class="btn btn-primary mb-2" href="">Arrivages</a>
-{{ form_start(form) }}
-            {{ form_rest(form) }}
-            <div class="text-center btn-container">
-                <button class="btn btn-primary">{{ button|default('Valider')}}</button>
-            </div>
-        </div>
-
+<div class="clearfix">
+    <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalArrivage" >Arrivage</button>
 </div>
-{{ form_end(form) }}
 <div class="content-section mb-4">
     <table class="table" id="tableSearch">
         <thead>
@@ -47,6 +41,46 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
+<!-- Modal arrivage-->
+<div class="modal fade" id="modalArrivage" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalTitle">
+                    Ajouter un nouvel arrivage
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-2">Remorque :</div>
+                        {{ form_widget(form.remorque) }}
+                        {{ form_errors(form.remorque) }}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-2">Quai :</div>
+                        {{ form_widget(form.quai) }}
+                        {{ form_errors(form.quai) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mt-3">
+                        {{ form_rest(form) }}
+                        <div class="text-right btn-container">
+                            <button class="btn btn-primary">{{ button|default('Ajouter')}}</button>
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Modal etat -->
 <div class="modal fade" id="modalEtat" tabindex="-1" role="dialog" aria-labelledby="exampleModalTitle" aria-hidden="true">

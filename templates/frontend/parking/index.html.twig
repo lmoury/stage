@@ -4,7 +4,9 @@
 
 {% block body %}
 <h1 class="text-center mb-4">Listing des parking</h1>
-
+<div class="clearfix">
+    <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
+</div>
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -20,7 +22,7 @@
 <!-- Tab panes -->
 <div class="tab-content content-section mb-4">
     <div id="home" class="container tab-pane active">
-        <table class="table" id="tableSearch">
+        <table class="table table-responsive" id="tableSearch">
             <thead>
                 <tr>
                     <th>Remorque</th>
@@ -45,7 +47,7 @@
     </div>
     {% for parking in parkings %}
     <div id="menu{{ parking.id }}" class="container tab-pane fade">
-        <table class="table tableSearch">
+        <table class="table table-responsive tableSearch">
             <thead>
                 <tr>
                     <th>Remorque</th>

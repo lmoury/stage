@@ -14,8 +14,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class OperationController extends AbstractController
+class ArrivageController extends AbstractController
 {
+
+    private $current_url = 'arrivages';
 
     /**
      * @var ObjectManager
@@ -35,19 +37,28 @@ class OperationController extends AbstractController
 
 
     /**
-     * @Route("/arrivages", name="arrivages.index", methods="GET|POST")
+     * @Route("/arrivages", name="arrivages", methods="GET|POST")
      * @param RemorqueRepository $this->repository
      */
-     public function index(Request $request)
+     public function index(Request $request, OperationRepository $repository)
      {
          $operation = new Operation();
          $form = $this->createForm(ArrivageType::class, $operation);
          $form->handleRequest($request);
 
          if($form->isSubmitted() && $form->isValid()) {
-             $operation->setParking(NULL);
-             $operation->setOperation(8);
-             $this->em->persist($operation);
+             $operationRe = $repository->getSearchRemorque($request->request->get('arrivage')['remorque']);
+             if($operationRe) {
+                 $operationRe->setParking(NULL);
+                 $operationRe->setTraction(NULL);
+                 $operationRe->setPlanning(NULL);
+                 $operationRe->setOperation(2);
+                 $operationRe->setQuai($operation->getQuai());
+             }
+             else {
+                 $operation->setOperation(2);
+                 $this->em->persist($operation);
+             }
              $this->em->flush();
              //$this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');
              return $this->redirectToRoute('arrivages');
@@ -56,7 +67,7 @@ class OperationController extends AbstractController
 
          return $this->render('frontend/arrivage/index.html.twig', [
              'form' => $form->createView(),
-             //'current_url' => $this->current_url,
+             'current_url' => $this->current_url,
              'arrivages' => $arrivages,
          ]);
      }
@@ -78,7 +89,7 @@ class OperationController extends AbstractController
 
          if($form->isSubmitted() && $form->isValid()) {
              $this->em->flush();
-             return $this->redirectToRoute('arrivages.index');
+             return $this->redirectToRoute('arrivages');
          }
 
          return $this->render('frontend/remorque/form/etat.html.twig', [

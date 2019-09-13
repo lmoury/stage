@@ -6,7 +6,7 @@ use App\Entity\Operation;
 use App\Entity\Traction;
 use App\Repository\TractionRepository;
 use App\Repository\OperationRepository;
-use App\Form\OperationTractionType;
+use App\Form\Frontend\OperationTractionType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,10 +37,22 @@ class TractionController extends AbstractController
     /**
      * @Route("traction", name="traction")
      * @param TractionRepository $repository
+     * @param OperationRepository $repo
      */
-    public function index(Request $request)
+    public function index(OperationRepository $repo)
     {
         $tractions = $this->repository->findAll();
+        $opes = $repo->getDeleteOperationTraction();
+        $date = date("d-m-Y");
+        foreach($opes as $ope)
+        {
+            if($ope->getDateCreation()->format('d-m-Y') != $date) {
+                $this->em->remove($ope);
+                $this->em->flush();
+                return $this->redirectToRoute('planning');
+            }
+
+        }
         return $this->render('frontend/traction/index.html.twig', [
             'current_url' => $this->current_url,
             'tractions' => $tractions,
@@ -68,6 +80,7 @@ class TractionController extends AbstractController
             if($operationRe) {
                 $operationRe->setParking(NULL);
                 $operationRe->setPlanning(NULL);
+                $operationRe->setQuai(NULL);
                 $operationRe->setOperation(2);
                 $operationRe->setAffectation($traction->getAffectation());
                 $operationRe->setTraction($traction);

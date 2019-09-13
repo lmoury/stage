@@ -21,16 +21,31 @@ class ArrivageType extends AbstractType
                 'class' => Remorque::class,
                 'choice_label' => 'remorque',
                 'query_builder' => function (RemorqueRepository $qr) {
-                    return $qr->createQueryBuilder('q')
-                    ->andWhere('q.maintenance = false');
-                }
+                    return $qr->createQueryBuilder('r')
+                    ->andWhere('r.maintenance = false')
+                    ->leftJoin('r.operation', 'o')
+                    ->addSelect('r', 'o')
+                    ->leftJoin('o.quai', 'q')
+                    ->addSelect('o', 'q')
+                    ->leftJoin('o.traction', 'tr')
+                    ->addSelect('o', 'tr')
+                    ->leftJoin('o.planning', 'pl')
+                    ->addSelect('o', 'pl')
+                    ->andWhere('r.maintenance = false')
+                    ->andWhere('o.quai is null');
+                },
             ])
             ->add('quai', EntityType::class, [
                 'class' => Quai::class,
                 'choice_label' => 'numero',
                 'query_builder' => function (QuaiRepository $qr) {
                     return $qr->createQueryBuilder('q')
-                    ->andWhere('q.maintenance = false');
+                    ->andWhere('q.maintenance = false')
+                    ->leftJoin('q.operation', 'o')
+                    ->addSelect('q', 'o')
+                    ->leftJoin('o.quai', 'qu')
+                    ->addSelect('o', 'qu')
+                    ->andWhere('o.quai is null');
                 }
             ])
         ;

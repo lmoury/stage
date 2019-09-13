@@ -137,7 +137,6 @@ class RemorqueController extends AbstractController
     {
 
         $operation = new Operation();
-
         $formParking = $this->createForm(EmplacementParkingType::class, $operation, [
             'action' => $this->generateUrl('remorques.emplacement', ['id' => $remorque->getId()]),
         ]);
@@ -153,20 +152,30 @@ class RemorqueController extends AbstractController
 
             $operationRe = $opRepository->getSearchRemorque($remorque->getId());
             if($operationRe) {
-                $this->em->remove($operationRe);
-                $this->em->flush();
+                $operationRe->setQuai(NULL);
+                $operationRe->setParking($operation->getParking());
+                $operationRe->setOperation(4);
             }
-                $operation = new Operation();
+            else {
                 $operation->setRemorque($remorque);
                 $operation->setOperation(4);
                 $this->em->persist($operation);
+            }
             $this->em->flush();
             return $this->redirectToRoute('remorques');
         }
         if($formQuai->isSubmitted() && $formQuai->isValid()) {
-            $operation2->setRemorque($remorque);
-            $operation2->setOperation(2);
-            $this->em->persist($operation2);
+            $operationRe = $opRepository->getSearchRemorque($remorque->getId());
+            if($operationRe) {
+                $operationRe->setParking(NULL);
+                $operationRe->setQuai($operation2->getQuai());
+                $operationRe->setOperation(2);
+            }
+            else {
+                $operation2->setRemorque($remorque);
+                $operation2->setOperation(2);
+                $this->em->persist($operation2);
+            }
             $this->em->flush();
             return $this->redirectToRoute('remorques');
         }

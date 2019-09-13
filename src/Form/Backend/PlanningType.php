@@ -15,6 +15,7 @@ class PlanningType extends AbstractType
             ->add('tournee')
             ->add('chauffeur')
             ->add('tracteur')
+            ->add('bloquer')
         ;
     }
 

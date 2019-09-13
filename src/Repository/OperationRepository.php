@@ -32,6 +32,30 @@ class OperationRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+    * @return Operation Return one Operation objects
+    */
+    public function getDeleteOperationPlanning()
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.planning is not null')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+    * @return Operation Return one Operation objects
+    */
+    public function getDeleteOperationTraction()
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.traction is not null')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /*
     public function findOneBySomeField($value): ?Operation
     {

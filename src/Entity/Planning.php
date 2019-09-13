@@ -32,6 +32,11 @@ class Planning
     private $tracteur;
 
     /**
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $bloquer = false;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Operation", mappedBy="planning", cascade={"persist", "remove"})
      */
     private $operation;
@@ -73,6 +78,18 @@ class Planning
     public function setTracteur(string $tracteur): self
     {
         $this->tracteur = $tracteur;
+
+        return $this;
+    }
+
+    public function getBloquer(): ?bool
+    {
+        return $this->bloquer;
+    }
+
+    public function setBloquer(bool $bloquer): self
+    {
+        $this->bloquer = $bloquer;
 
         return $this;
     }

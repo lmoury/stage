@@ -5,7 +5,7 @@ namespace App\Controller\Frontend;
 use App\Entity\Operation;
 use App\Entity\Planning;
 use App\Repository\PlanningRepository;
-use App\Form\OperationPlanningType;
+use App\Form\Frontend\OperationPlanningType;
 use App\Repository\OperationRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,10 +37,22 @@ class PlanningController extends AbstractController
     /**
      * @Route("planning", name="planning")
      * @param PlanningRepository $repository
+     * @param OperationRepository $repo
      */
-    public function index(Request $request)
+    public function index(OperationRepository $repo)
     {
-        $plannings = $this->repository->findAll();
+        $plannings = $this->repository->getPlanning();
+        $opes = $repo->getDeleteOperationPlanning();
+        $date = date("d-m-Y");
+        foreach($opes as $ope)
+        {
+            if($ope->getDateCreation()->format('d-m-Y') != $date) {
+                $this->em->remove($ope);
+                $this->em->flush();
+                return $this->redirectToRoute('planning');
+            }
+
+        }
         return $this->render('frontend/planning/index.html.twig', [
             'current_url' => $this->current_url,
             'plannings' => $plannings,
@@ -68,6 +80,7 @@ class PlanningController extends AbstractController
             if($operationRe) {
                 $operationRe->setParking(NULL);
                 $operationRe->setTraction(NULL);
+                $operationRe->setQuai(NULL);
                 $operationRe->setOperation(2);
                 $operationRe->setAffectation($request->request->get('operation_planning')['affectation']);
                 $operationRe->setPlanning($planning);
@@ -106,6 +119,7 @@ class PlanningController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $operation->setParking(NULL);
             $operation->setTraction(NULL);
+            $operation->setQuai(NULL);
             $this->em->flush();
             //$this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');
             return $this->redirectToRoute('planning');

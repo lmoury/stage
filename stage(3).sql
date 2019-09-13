@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 03 Septembre 2019 à 22:24
+-- Généré le :  Ven 13 Septembre 2019 à 15:46
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.3.2
 
@@ -66,7 +66,8 @@ INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
 ('20190821201510', '2019-08-21 20:15:20'),
 ('20190902155624', '2019-09-02 15:56:28'),
 ('20190903172416', '2019-09-03 17:24:24'),
-('20190903173948', '2019-09-03 17:39:53');
+('20190903173948', '2019-09-03 17:39:53'),
+('20190912112955', '2019-09-12 11:30:05');
 
 -- --------------------------------------------------------
 
@@ -91,13 +92,7 @@ CREATE TABLE `operation` (
 --
 
 INSERT INTO `operation` (`id`, `remorque_id`, `operation`, `date_creation`, `parking_id`, `quai_id`, `traction_id`, `planning_id`, `affectation`) VALUES
-(116, 36, '2', '2019-09-03 19:41:37', NULL, 6, 13, NULL, 'Tournai'),
-(118, 40, '2', '2019-09-03 20:32:07', NULL, NULL, NULL, 5, 'tournai'),
-(125, 44, '2', '2019-09-03 22:56:26', NULL, 1, NULL, NULL, NULL),
-(131, 42, '4', '2019-09-03 23:21:40', NULL, NULL, NULL, NULL, NULL),
-(132, 43, '4', '2019-09-03 23:22:52', NULL, NULL, NULL, NULL, NULL),
-(133, 45, '4', '2019-09-03 23:23:04', NULL, NULL, NULL, NULL, NULL),
-(134, 35, '8', '2019-09-04 00:23:34', NULL, 10, NULL, NULL, NULL);
+(166, 35, '2', '2019-09-13 12:58:46', NULL, 1, 17, NULL, 'Allemagne');
 
 -- --------------------------------------------------------
 
@@ -119,9 +114,7 @@ INSERT INTO `parking` (`id`, `denomination`) VALUES
 (2, 'Parking 2'),
 (3, 'Parking 3'),
 (4, 'Parking 4'),
-(5, 'Rue'),
-(10, 'tre'),
-(11, 'test');
+(5, 'Rue');
 
 -- --------------------------------------------------------
 
@@ -133,17 +126,17 @@ CREATE TABLE `planning` (
   `id` int(11) NOT NULL,
   `tournee` int(11) NOT NULL,
   `chauffeur` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tracteur` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `tracteur` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bloquer` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Contenu de la table `planning`
 --
 
-INSERT INTO `planning` (`id`, `tournee`, `chauffeur`, `tracteur`) VALUES
-(2, 301, 'Christian Albrecht', '1NAL270'),
-(3, 302, 'Mickaël Daully', '1TDZ439'),
-(5, 300, 'Laurent Moury', 'TN567');
+INSERT INTO `planning` (`id`, `tournee`, `chauffeur`, `tracteur`, `bloquer`) VALUES
+(6, 300, 'laetitia', '2345JU', 0),
+(7, 301, 'test laurent', '123ZE', 0);
 
 -- --------------------------------------------------------
 
@@ -283,17 +276,17 @@ INSERT INTO `remorque` (`id`, `remorque`, `immatriculation`, `date_creation`, `d
 (35, 'SA623', '1-QCL-83', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 6, NULL, 1),
 (36, 'SA624', '1-QCL-84', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 6, NULL, 1),
 (37, 'SA625', '1-QCL-85', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 6, NULL, 0),
-(38, 'SA626', '1-QCL-86', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 6, NULL, 1),
+(38, 'SA626', '1-QCL-86', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 1, 6, 'trac', 1),
 (39, 'SA627', '1-QCL-87', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, NULL, 1),
 (40, 'SA628', '1-QCL-88', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, NULL, 1),
 (41, 'SA629', '1-QCL-89', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, NULL, 1),
 (42, 'SA6210', '1-QCL-810', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, '', 1),
-(43, 'SA6211', '1-QCL-811', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, NULL, 1),
+(43, 'SA6211', '1-QCL-811', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, NULL, 0),
 (44, 'SA6212', '1-QCL-812', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 0),
 (45, 'SA6213', '1-QCL-813', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 1),
 (46, 'SA6214', '1-QCL-814', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 1),
 (47, 'SA6215', '1-QCL-815', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 1),
-(48, 'SA6216', '1-QCL-816', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 1);
+(48, 'SA6216', '1-QCL-816', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -333,7 +326,10 @@ CREATE TABLE `traction` (
 --
 
 INSERT INTO `traction` (`id`, `affectation`, `quai_id`) VALUES
-(13, 'Tournai', 6);
+(15, 'Belgique', 4),
+(16, 'France', 11),
+(17, 'Allemagne', 22),
+(18, 'Espagne', 80);
 
 -- --------------------------------------------------------
 
@@ -436,17 +432,17 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `operation`
 --
 ALTER TABLE `operation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
 --
 -- AUTO_INCREMENT pour la table `parking`
 --
 ALTER TABLE `parking`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `planning`
 --
 ALTER TABLE `planning`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `quai`
 --
@@ -466,7 +462,7 @@ ALTER TABLE `remorque_type`
 -- AUTO_INCREMENT pour la table `traction`
 --
 ALTER TABLE `traction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT pour la table `user`
 --

@@ -52,12 +52,12 @@ class Operation
     private $quai;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Traction", inversedBy="operation", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Traction", inversedBy="operation")
      */
     private $traction;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Planning", inversedBy="operation", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Planning", inversedBy="operation")
      */
     private $planning;
 

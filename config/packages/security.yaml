@@ -38,3 +38,4 @@ security:
     role_hierarchy:
         # il herite de tous les droit GOODMOD
         ROLE_ADMIN: [ROLE_PARKING, ROLE_QUAI, ROLE_EMPLOYE]
+        ROLE_EMPLOYE: [ROLE_PARKING, ROLE_QUAI]

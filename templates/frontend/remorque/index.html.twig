@@ -4,8 +4,11 @@
 
 {% block body %}
 <h1 class="text-center mb-4">Listing des remorques</h1>
+<div class="clearfix">
+    <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
+</div>
 <div class="content-section mb-4">
-    <table class="table" id="tableSearch">
+    <table class="table table-responsive" id="tableSearch">
         <thead>
             <tr>
                 <th>Remorque</th>
@@ -17,7 +20,7 @@
         </thead>
         <tbody>
             {% for remorque in remorques %}
-            <tr>
+            <tr class="{% if remorque.maintenance %}etat2{% elseif remorque.vide %}etat0{% else %}etat3{% endif %}">
                 <td>{{ remorque.remorque }}</td>
                 <td>{{ remorque.immatriculation }}</td>
                 <td>{{ remorque.type.denomination }}</td>
@@ -33,6 +36,8 @@
                         {% elseif remorque.operation.planning %}
                             Affectation : <strong>{{ remorque.operation.affectation}}</strong><br/>
                             Tournée : <strong>{{ remorque.operation.planning.tournee }}</strong><br/>
+                        {% elseif remorque.operation.quai %}
+                            Quai : <strong>{{ remorque.operation.quai.numero}}</strong><br/>
                         {% elseif remorque.operation.operation == 5 %}
                             Affectation : <strong>{{ remorque.operation.affectation}}</strong><br/>
                         {% endif %}

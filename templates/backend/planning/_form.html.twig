@@ -1,5 +1,11 @@
 {{ form_start(form) }}
     <div class="row">
+        <div class="col-md-12 mb-3">
+            {{ form_widget(form.bloquer) }}
+            {{ form_errors(form.bloquer) }}
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-3 mb-3">
             <label for="miniature">Numéro de la tournée : </label>
             {{ form_widget(form.tournee, { 'attr': {'placeholder': 'Entrer le numéro de tournée'} }) }}
