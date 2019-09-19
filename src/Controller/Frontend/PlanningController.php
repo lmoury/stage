@@ -11,7 +11,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+* @Security("has_role('ROLE_EMPLOYE')")
+*/
 class PlanningController extends AbstractController
 {
 

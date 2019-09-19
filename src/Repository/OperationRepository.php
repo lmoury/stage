@@ -51,6 +51,7 @@ class OperationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.traction is not null')
+            ->andWhere('o.parking is null')
             ->getQuery()
             ->getResult()
         ;

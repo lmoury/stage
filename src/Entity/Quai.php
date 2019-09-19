@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\QuaiRepository")
+ * @UniqueEntity("numero", message="Numéro de quai déjà pris")
  */
 class Quai
 {

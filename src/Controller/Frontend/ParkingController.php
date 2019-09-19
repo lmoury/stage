@@ -5,7 +5,11 @@ namespace App\Controller\Frontend;
 use App\Repository\ParkingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+* @Security("has_role('ROLE_PARKING')")
+*/
 class ParkingController extends AbstractController
 {
 

@@ -11,7 +11,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+* @Security("has_role('ROLE_PARKING')")
+*/
 class TractionController extends AbstractController
 {
 
@@ -49,7 +53,7 @@ class TractionController extends AbstractController
             if($ope->getDateCreation()->format('d-m-Y') != $date) {
                 $this->em->remove($ope);
                 $this->em->flush();
-                return $this->redirectToRoute('planning');
+                return $this->redirectToRoute('traction');
             }
 
         }
@@ -78,12 +82,12 @@ class TractionController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $operationRe = $repository->getSearchRemorque($request->request->get('operation_traction')['remorque']);
             if($operationRe) {
-                $operationRe->setParking(NULL);
                 $operationRe->setPlanning(NULL);
                 $operationRe->setQuai(NULL);
                 $operationRe->setOperation(2);
                 $operationRe->setAffectation($traction->getAffectation());
                 $operationRe->setTraction($traction);
+                $operationRe->setDateCreation(new \DateTime());
             }
             else {
                 $operation->setOperation(2);
@@ -92,7 +96,7 @@ class TractionController extends AbstractController
                 $this->em->persist($operation);
             }
             $this->em->flush();
-            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> a étais affecté sur le quai <strong>'.$traction->getQuai()->getNumero().'</strong>');
+            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> à été affectée sur le quai <strong>'.$traction->getQuai()->getNumero().'</strong>');
             return $this->redirectToRoute('traction');
         }
 
@@ -109,7 +113,7 @@ class TractionController extends AbstractController
      * @param Operation $operation
      * @param Request $request
      */
-    public function editerTraction(Request $request, Operation $operation)
+    public function editerTraction(Request $request, Operation $operation, OperationRepository $repository)
     {
         $form = $this->createForm(OperationTractionType::class, $operation, [
             'action' => $this->generateUrl('traction.editer', ['id' => $operation->getId()]),
@@ -117,9 +121,13 @@ class TractionController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $operation->setParking(NULL);
-            $operation->setPlanning(NULL);
-            $operation->setQuai(NULL);
+            $operationRe = $repository->getSearchRemorque($request->request->get('operation_traction')['remorque']);
+            if($operationRe) {
+                $operationRe->setTraction($operation->getTraction());
+                $this->em->flush();
+            }
+            $operation->setRemorque(getRemorque());
+            $operation->setTraction(NULL);
             $this->em->flush();
             //$this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');
             return $this->redirectToRoute('traction');
@@ -139,9 +147,10 @@ class TractionController extends AbstractController
      */
     public function aQuai(Operation $operation)
     {
+        $operation->setParking(NULL);
         $operation->setQuai($operation->getTraction()->getQuai());
         $this->em->flush();
-        $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> a étais mise à quai </strong>');
+        $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> à été mise à quai </strong>');
         return $this->redirectToRoute('traction');
     }
 }

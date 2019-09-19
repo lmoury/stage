@@ -14,7 +14,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+* @Security("has_role('ROLE_PARKING')")
+*/
 class RemorqueController extends AbstractController
 {
 
@@ -142,17 +146,13 @@ class RemorqueController extends AbstractController
         ]);
         $formParking->handleRequest($request);
 
-        $operation2 = new Operation();
-        $formQuai = $this->createForm(EmplacementQuaiType::class, $operation2, [
-            'action' => $this->generateUrl('remorques.emplacement', ['id' => $remorque->getId()]),
-        ]);
-        $formQuai->handleRequest($request);
-
         if($formParking->isSubmitted() && $formParking->isValid()) {
 
             $operationRe = $opRepository->getSearchRemorque($remorque->getId());
             if($operationRe) {
                 $operationRe->setQuai(NULL);
+                $operationRe->setTraction(NULL);
+                $operationRe->setPlanning(NULL);
                 $operationRe->setParking($operation->getParking());
                 $operationRe->setOperation(4);
             }
@@ -164,25 +164,9 @@ class RemorqueController extends AbstractController
             $this->em->flush();
             return $this->redirectToRoute('remorques');
         }
-        if($formQuai->isSubmitted() && $formQuai->isValid()) {
-            $operationRe = $opRepository->getSearchRemorque($remorque->getId());
-            if($operationRe) {
-                $operationRe->setParking(NULL);
-                $operationRe->setQuai($operation2->getQuai());
-                $operationRe->setOperation(2);
-            }
-            else {
-                $operation2->setRemorque($remorque);
-                $operation2->setOperation(2);
-                $this->em->persist($operation2);
-            }
-            $this->em->flush();
-            return $this->redirectToRoute('remorques');
-        }
 
         return $this->render('frontend/remorque/form/emplacement.html.twig', [
             'form' => $formParking->createView(),
-            'formQuai' => $formQuai->createView(),
             'remorque' => $remorque,
 
         ]);

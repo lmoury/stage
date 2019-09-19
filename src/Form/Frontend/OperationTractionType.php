@@ -29,7 +29,8 @@ class OperationTractionType extends AbstractType
                     ->addSelect('o', 'pl')
                     ->andWhere('r.maintenance = false')
                     ->andWhere('o.traction is null')
-                    ->andWhere('o.planning is null');
+                    ->andWhere('o.planning is null')
+                    ->andWhere('o.parking is not null or o.quai is not null');
                 },
             ])
         ;

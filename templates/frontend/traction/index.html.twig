@@ -27,16 +27,18 @@
                     <a href="#" data-title="Remorque" data-toggle="modal" data-target="#modalRemorque{{ traction.operation.remorque.id }}" >
                         {{ traction.operation.remorque.remorque }}
                     </a>
-                    {{ include('frontend/inc/modalRemorque.html.twig', {id: traction.operation.remorque.id, remorque: traction.operation.remorque.remorque, immatriculation: traction.operation.remorque.immatriculation, type:traction.operation.remorque.type.denomination}) }}
+                    {{ include('frontend/inc/modalRemorque.html.twig', {id: traction.operation.remorque.id, remorque: traction.operation.remorque.remorque, immatriculation: traction.operation.remorque.immatriculation, type:traction.operation.remorque.type.denomination, ope: traction.operation}) }}
                     {% endif %}
                 </td>
                 <td>
                     {% if traction.operation %}
-                        {% if traction.operation.operation == 2 and is_granted('ROLE_EMPLOYE') %}
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="modif" data-id="{{ traction.operation.id }}">Modifier</button>
-                        {% endif %}
-                        {% if traction.operation.quai == null and is_granted('ROLE_PARKING') %}
+                        {% if traction.operation.quai == null %}
+                            {% if traction.operation.operation == 2 and is_granted('ROLE_EMPLOYE') %}
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="modif" data-id="{{ traction.operation.id }}">Modifier</button>
+                            {% endif %}
                             <a class="btn btn-primary" href="{{ path('remorques.aquai', {id: traction.operation.id}) }}">A quai</a>
+                        {% else %}
+                            <span>Terminé</span>
                         {% endif %}
                     {% elseif is_granted('ROLE_EMPLOYE') %}
                         <button class="btn btn-primary" data-toggle="modal" data-target="#modalTraction" data-operation="add" data-id="{{ traction.id }}">Affectation</button>

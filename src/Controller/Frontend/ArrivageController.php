@@ -13,7 +13,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+* @Security("has_role('ROLE_QUAI')")
+*/
 class ArrivageController extends AbstractController
 {
 
@@ -52,10 +56,12 @@ class ArrivageController extends AbstractController
                  $operationRe->setParking(NULL);
                  $operationRe->setTraction(NULL);
                  $operationRe->setPlanning(NULL);
+                 $operationRe->getRemorque()->setVide(false);
                  $operationRe->setOperation(2);
                  $operationRe->setQuai($operation->getQuai());
              }
              else {
+                 $operation->getRemorque()->setVide(false);
                  $operation->setOperation(2);
                  $this->em->persist($operation);
              }

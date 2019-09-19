@@ -14,6 +14,9 @@
 {% endblock %}
 
 {% block body %}
+{% if form_errors(form.numero) %}
+    <div class="alert alert-danger">{{ form_errors(form.numero) }}.</div>
+{% endif %}
 <div class="clearfix">
     <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalNewQuai">Ajouter</button>
@@ -86,7 +89,6 @@
                 <div class="row">
                         <div class="col-md-7">
                             {{ form_widget(form.numero) }}
-                            {{ form_errors(form.numero) }}
                         </div>
                         <div class="col-md-5">
                             {{ form_rest(form) }}

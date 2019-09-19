@@ -20,24 +20,26 @@
         </thead>
         <tbody>
             {% for remorque in remorques %}
-            <tr class="{% if remorque.maintenance %}etat2{% elseif remorque.vide %}etat0{% else %}etat3{% endif %}">
+            <tr class="{% if remorque.maintenance %}etat2{% elseif remorque.vide and remorque.operation.quai is defined and remorque.operation.quai != null and remorque.operation.traction is null and remorque.operation.planning is null  %}etat4{% elseif remorque.vide %}etat0{% else %}etat3{% endif %}">
                 <td>{{ remorque.remorque }}</td>
                 <td>{{ remorque.immatriculation }}</td>
                 <td>{{ remorque.type.denomination }}</td>
                 <td>
                     {% if remorque.operation %}
-                        {{ remorque.operation.operationType }}<br/>
+
                         {% if remorque.operation.parking %}
                             Parking : <strong>{{ remorque.operation.parking.denomination}}</strong><br/>
                         {% elseif remorque.operation.traction %}
+                            <strong>Traction</strong><br/>
                             Affectation : <strong>{{ remorque.operation.traction.affectation}}</strong><br/>
                             Quai numéro : <strong>{{ remorque.operation.traction.quai.numero }}</strong><br/>
                             Le {{ remorque.operation.dateCreation | localizeddate('none', 'none', 'fr', null, 'd MMMM Y à H:m') }}
                         {% elseif remorque.operation.planning %}
+                            <strong>Planning</strong><br/>
                             Affectation : <strong>{{ remorque.operation.affectation}}</strong><br/>
                             Tournée : <strong>{{ remorque.operation.planning.tournee }}</strong><br/>
                         {% elseif remorque.operation.quai %}
-                            Quai : <strong>{{ remorque.operation.quai.numero}}</strong><br/>
+                            Sur le quai : <strong>{{ remorque.operation.quai.numero}}</strong><br/>
                         {% elseif remorque.operation.operation == 5 %}
                             Affectation : <strong>{{ remorque.operation.affectation}}</strong><br/>
                         {% endif %}
