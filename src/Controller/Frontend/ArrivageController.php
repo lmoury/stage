@@ -66,7 +66,7 @@ class ArrivageController extends AbstractController
                  $this->em->persist($operation);
              }
              $this->em->flush();
-             //$this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');
+             $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> à été mise sur le quai : <strong>'.$operation->getQuai()->getNumero().'</strong> ');
              return $this->redirectToRoute('arrivages');
          }
          $arrivages = $this->repository->getArrivages();
@@ -103,5 +103,20 @@ class ArrivageController extends AbstractController
              'remorque' => $remorque,
 
          ]);
+     }
+
+
+     /**
+      * @Route("/arrivages/terminer.{id}", name="arrivages.terminer")
+      * @param ObjectManager $this->em
+      * @param Request $request
+      * @param Remorque $remorque
+      */
+     public function terminer(Request $request, Remorque $remorque)
+     {
+         $remorque->setVide(true);
+         $this->em->flush();
+         $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> peux être déplacée ');
+         return $this->redirectToRoute('arrivages');
      }
 }

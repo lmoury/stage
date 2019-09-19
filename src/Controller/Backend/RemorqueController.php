@@ -62,7 +62,7 @@ class RemorqueController extends AbstractController
        if($form->isSubmitted() && $form->isValid()) {
            $this->em->persist($remorque);
            $this->em->flush();
-           $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été ajouté');
+           $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été ajoutée');
            return $this->redirectToRoute('admin.remorque.index');
        }
 
@@ -88,7 +88,7 @@ class RemorqueController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $remorque->setDateEdition(new \DateTime());
             $this->em->flush();
-            $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été modifié');
+            $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été modifiée');
             return $this->redirectToRoute('admin.remorque.index');
         }
 
@@ -110,7 +110,7 @@ class RemorqueController extends AbstractController
         if($this->isCsrfTokenValid('delete' . $remorque->getId(), $request->get('_token'))) {
             $this->em->remove($remorque);
             $this->em->flush();
-            $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été supprimé');
+            $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été supprimée');
         }
         return $this->redirectToRoute('admin.remorque.index');
     }

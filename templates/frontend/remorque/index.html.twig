@@ -8,6 +8,17 @@
     <a href="" class="float-right mb-3 btn btn-primary" title="Rafraichir la page"><i class="fa fa-refresh"></i></a>
 </div>
 <div class="content-section mb-4">
+    <div id="legende">
+        <div class="ligne">
+            <div> Légende : </div>
+            <div class="couleur etat0"> Vide </div>
+            <div class="couleur etat1"> Chargée </div>
+            {% if is_granted('ROLE_EMPLOYE') %}
+            <div class="couleur etat2"> Bloquée </div>
+            {% endif %}
+            <div class="couleur etat4"> A déplacée </div>
+        </div>
+    </div>
     <table class="table table-responsive" id="tableSearch">
         <thead>
             <tr>

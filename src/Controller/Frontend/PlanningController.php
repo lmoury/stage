@@ -95,7 +95,7 @@ class PlanningController extends AbstractController
                 $this->em->persist($operation);
             }
             $this->em->flush();
-            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> a étais affecté a la tournée <strong>'.$planning->getTournee().'</strong>');
+            $this->addFlash('success', 'La remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong> à été affectée a la tournée <strong>'.$planning->getTournee().'</strong>');
             return $this->redirectToRoute('planning');
         }
 

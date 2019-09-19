@@ -46,7 +46,7 @@ class RemorqueTypeController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($remorqueType);
             $this->em->flush();
-            $this->addFlash('success', 'Le type <strong>'.$remorqueType->getDenomination().'</strong> a été ajouté');
+            $this->addFlash('success', 'Le type <strong>'.$remorqueType->getDenomination().'</strong> à été ajouté');
             return $this->redirectToRoute('admin.remorque.type.index');
         }
 
@@ -68,7 +68,7 @@ class RemorqueTypeController extends AbstractController
     {
       $this->em->remove($remorqueType);
       $this->em->flush();
-      $this->addFlash('success', 'Le type <strong>'.$remorqueType->getDenomination().'</strong> a été supprimé');
+      $this->addFlash('success', 'Le type <strong>'.$remorqueType->getDenomination().'</strong> à été supprimé');
       return $this->redirectToRoute('admin.remorque.type.index');
     }
 
@@ -88,7 +88,7 @@ class RemorqueTypeController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
-            $this->addFlash('success', 'Le type <strong>'.$remorqueType->getDenomination().'</strong> a été modifié');
+            $this->addFlash('success', 'Le type <strong>'.$remorqueType->getDenomination().'</strong> à été modifié');
             return $this->redirectToRoute('admin.remorque.type.index');
         }
 

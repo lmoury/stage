@@ -62,7 +62,7 @@ class TractionController extends AbstractController
        if($form->isSubmitted() && $form->isValid()) {
            $this->em->persist($traction);
            $this->em->flush();
-           $this->addFlash('success', 'L\'affectation <strong>'.$traction->getAffectation().'</strong> à été ajouté');
+           $this->addFlash('success', 'L\'affectation <strong>'.$traction->getAffectation().'</strong> à été ajoutée');
            return $this->redirectToRoute('admin.traction.index');
        }
 
@@ -87,7 +87,7 @@ class TractionController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
-            $this->addFlash('success', 'L\'affectation <strong>'.$traction->getAffectation().'</strong> à été modifié');
+            $this->addFlash('success', 'L\'affectation <strong>'.$traction->getAffectation().'</strong> à été modifiée');
             return $this->redirectToRoute('admin.traction.index');
         }
 
@@ -109,7 +109,7 @@ class TractionController extends AbstractController
         if($this->isCsrfTokenValid('delete' . $traction->getId(), $request->get('_token'))) {
             $this->em->remove($traction);
             $this->em->flush();
-            $this->addFlash('success', 'L\'affectation <strong>'.$traction->getAffectation().'</strong> à été supprimé');
+            $this->addFlash('success', 'L\'affectation <strong>'.$traction->getAffectation().'</strong> à été supprimée');
         }
         return $this->redirectToRoute('admin.traction.index');
     }

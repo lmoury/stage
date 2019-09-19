@@ -37,10 +37,6 @@
                 </td>
                 <td>
                     {% if planning.operation %}
-                        {% if planning.operation.operation == 2 and is_granted('ROLE_QUAI') %}
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalPlanning" data-operation="modif" data-id="{{ planning.operation.id }}">Affectation</button>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalPlanning" data-operation="modif" data-id="{{ planning.operation.id }}">Modifier</button>
-                        {% endif %}
                     {% elseif is_granted('ROLE_QUAI') %}
                         <button class="btn btn-primary" data-toggle="modal" data-target="#modalPlanning" data-operation="add" data-id="{{ planning.id }}">Affectation</button>
                     {% endif %}

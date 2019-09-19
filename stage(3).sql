@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 13 Septembre 2019 à 15:46
+-- Généré le :  Jeu 19 Septembre 2019 à 16:06
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.3.2
 
@@ -92,7 +92,14 @@ CREATE TABLE `operation` (
 --
 
 INSERT INTO `operation` (`id`, `remorque_id`, `operation`, `date_creation`, `parking_id`, `quai_id`, `traction_id`, `planning_id`, `affectation`) VALUES
-(166, 35, '2', '2019-09-13 12:58:46', NULL, 1, 17, NULL, 'Allemagne');
+(204, 47, '2', '2019-09-19 00:14:53', NULL, NULL, NULL, 1, 'lille'),
+(205, 43, '2', '2019-09-19 11:24:40', 1, NULL, 5, NULL, 'Alsdorf Cologne'),
+(207, 42, '4', '2019-09-19 00:25:29', 1, NULL, NULL, NULL, 'Annecy Grenoble'),
+(208, 34, '2', '2019-09-19 16:59:38', NULL, 3, NULL, NULL, NULL),
+(209, 46, '2', '2019-09-19 18:05:29', 5, NULL, 2, NULL, 'Koblenz Mannheim'),
+(210, 48, '4', '2019-09-19 17:25:30', 2, NULL, NULL, NULL, NULL),
+(211, 35, '4', '2019-09-19 17:36:48', 1, NULL, NULL, NULL, NULL),
+(212, 36, '2', '2019-09-19 18:04:21', NULL, 4, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -110,11 +117,11 @@ CREATE TABLE `parking` (
 --
 
 INSERT INTO `parking` (`id`, `denomination`) VALUES
-(1, 'Parking 1'),
-(2, 'Parking 2'),
-(3, 'Parking 3'),
-(4, 'Parking 4'),
-(5, 'Rue');
+(1, 'P1'),
+(2, 'P2'),
+(3, 'P3'),
+(4, 'P4'),
+(5, 'RUE');
 
 -- --------------------------------------------------------
 
@@ -135,8 +142,37 @@ CREATE TABLE `planning` (
 --
 
 INSERT INTO `planning` (`id`, `tournee`, `chauffeur`, `tracteur`, `bloquer`) VALUES
-(6, 300, 'laetitia', '2345JU', 0),
-(7, 301, 'test laurent', '123ZE', 0);
+(1, 300, 'Frédéric Kuik', '1TDZ439', 0),
+(2, 301, 'Christian Albrecht', '1NAL270', 0),
+(3, 302, 'Mickaël Daully', '1TDZ439', 0),
+(4, 303, 'Philippe Kahlouche', '1TDZ456', 0),
+(5, 304, 'Eric Catteau', '1NAL341', 0),
+(6, 305, 'Mohammed El Bhounouni', '1NAL236', 0),
+(7, 306, 'Patrick Legas', '1NBF277', 0),
+(8, 307, 'Frédéric Vermeire', '1NAL316', 0),
+(9, 308, 'Cédric Bétermier', '1TDZ443', 0),
+(10, 309, 'David Flipot', '1NAL361', 0),
+(11, 310, 'Thomas Decaluwé', '1PFP931', 0),
+(12, 311, 'David Villers', '1NAL298', 0),
+(13, 312, 'Christophe Phélizon', '1TDZ464', 0),
+(14, 313, 'Aurélien Gilmet', '1NBF292', 0),
+(15, 314, 'Christophe Devos', '1PGL507', 0),
+(16, 315, 'Dominique Polet', '1TDZ436', 0),
+(17, 316, 'Frédéric Jallet', '1TER209', 0),
+(18, 317, 'Jefferson Catteaux', 'Externe', 0),
+(19, 318, 'Patrick Guilmin', '1TDZ451', 0),
+(20, 319, 'Sébastien Delbecq', '1NBF259', 0),
+(21, 320, 'B&T Trans', 'Externe', 0),
+(22, 321, 'Deluxe', 'Externe', 0),
+(23, 322, 'Deluxe', 'Externe', 0),
+(24, 323, 'Deluxe', 'Externe', 0),
+(25, 325, 'Analexis', 'Externe', 0),
+(26, 326, 'Analexis', 'Externe', 0),
+(27, 327, 'Analexis', 'Externe', 0),
+(28, 328, 'IDM', 'Externe', 0),
+(29, 329, 'IDM', 'Externe', 0),
+(30, 330, 'GHS', 'Externe', 0),
+(31, 335, 'Verso', 'Externe', 0);
 
 -- --------------------------------------------------------
 
@@ -155,7 +191,6 @@ CREATE TABLE `quai` (
 --
 
 INSERT INTO `quai` (`id`, `numero`, `maintenance`) VALUES
-(1, 101, 0),
 (2, 102, 1),
 (3, 103, 0),
 (4, 104, 0),
@@ -234,7 +269,7 @@ INSERT INTO `quai` (`id`, `numero`, `maintenance`) VALUES
 (77, 237, 0),
 (78, 238, 0),
 (79, 239, 0),
-(80, 240, 1),
+(80, 240, 0),
 (81, 241, 0),
 (82, 242, 0),
 (83, 244, 0),
@@ -247,7 +282,8 @@ INSERT INTO `quai` (`id`, `numero`, `maintenance`) VALUES
 (90, 251, 0),
 (91, 252, 0),
 (92, 253, 0),
-(96, 254, 0);
+(96, 254, 0),
+(97, 101, 0);
 
 -- --------------------------------------------------------
 
@@ -272,21 +308,16 @@ CREATE TABLE `remorque` (
 --
 
 INSERT INTO `remorque` (`id`, `remorque`, `immatriculation`, `date_creation`, `date_edition`, `maintenance`, `type_id`, `maintenance_raison`, `vide`) VALUES
-(34, 'SA622', '1-QCL-82', '2019-07-07 23:18:49', '2019-08-26 14:25:06', 1, 6, 'reparation', 0),
-(35, 'SA623', '1-QCL-83', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 6, NULL, 1),
-(36, 'SA624', '1-QCL-84', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 6, NULL, 1),
-(37, 'SA625', '1-QCL-85', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 6, NULL, 0),
-(38, 'SA626', '1-QCL-86', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 1, 6, 'trac', 1),
-(39, 'SA627', '1-QCL-87', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, NULL, 1),
-(40, 'SA628', '1-QCL-88', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, NULL, 1),
-(41, 'SA629', '1-QCL-89', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, NULL, 1),
-(42, 'SA6210', '1-QCL-810', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, '', 1),
-(43, 'SA6211', '1-QCL-811', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 7, NULL, 0),
-(44, 'SA6212', '1-QCL-812', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 0),
-(45, 'SA6213', '1-QCL-813', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 1),
-(46, 'SA6214', '1-QCL-814', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 1),
-(47, 'SA6215', '1-QCL-815', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 1),
-(48, 'SA6216', '1-QCL-816', '2019-07-07 23:18:49', '2019-07-07 23:18:49', 0, 8, NULL, 0);
+(34, 'SA17', '1-QCL-82', '2019-07-07 23:18:49', '2019-09-18 13:00:02', 0, 6, '', 1),
+(35, 'SA18', '1-QCL-83', '2019-07-07 23:18:49', '2019-09-18 13:00:16', 0, 6, NULL, 1),
+(36, 'SA19', '1-QCL-84', '2019-07-07 23:18:49', '2019-09-18 13:00:28', 0, 6, NULL, 0),
+(42, 'SA10', '1-QCL-810', '2019-07-07 23:18:49', '2019-09-18 12:58:03', 0, 7, '', 1),
+(43, 'SA11', '1-QCL-811', '2019-07-07 23:18:49', '2019-09-18 12:58:12', 0, 7, NULL, 1),
+(44, 'SA12', '1-QCL-812', '2019-07-07 23:18:49', '2019-09-18 12:58:24', 0, 8, '', 1),
+(45, 'SA13', '1-QCL-813', '2019-07-07 23:18:49', '2019-09-18 12:58:34', 1, 8, 'TEST', 0),
+(46, 'SA14', '1-QCL-814', '2019-07-07 23:18:49', '2019-09-18 12:58:46', 0, 8, NULL, 1),
+(47, 'SA15', '1-QCL-815', '2019-07-07 23:18:49', '2019-09-18 12:58:59', 0, 8, NULL, 1),
+(48, 'SA16', '1-QCL-816', '2019-07-07 23:18:49', '2019-09-18 12:59:17', 0, 8, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -326,10 +357,27 @@ CREATE TABLE `traction` (
 --
 
 INSERT INTO `traction` (`id`, `affectation`, `quai_id`) VALUES
-(15, 'Belgique', 4),
-(16, 'France', 11),
-(17, 'Allemagne', 22),
-(18, 'Espagne', 80);
+(1, 'Dartford', 2),
+(2, 'Koblenz Mannheim', 5),
+(3, 'Hamburg', 8),
+(4, 'Bremen', 9),
+(5, 'Alsdorf Cologne', 11),
+(6, 'Berlin', 17),
+(7, 'Strasbourg', 18),
+(8, 'Freiburg', 19),
+(9, 'Nantes', 20),
+(10, 'Rennes', 21),
+(11, 'Verrie', 22),
+(12, 'Wissous Orléans', 23),
+(13, 'Bordeaux', 26),
+(14, 'Tours Niort', 25),
+(15, 'Toulouse', 27),
+(16, 'Annecy Grenoble', 29),
+(17, 'Clermont St Etienne', 30),
+(18, 'Hub Clermont', 31),
+(19, 'Lyon', 32),
+(20, 'Bad Salzuflen', 46),
+(21, 'Zevenaar', 48);
 
 -- --------------------------------------------------------
 
@@ -396,7 +444,8 @@ ALTER TABLE `planning`
 -- Index pour la table `quai`
 --
 ALTER TABLE `quai`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `numero` (`numero`);
 
 --
 -- Index pour la table `remorque`
@@ -432,7 +481,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `operation`
 --
 ALTER TABLE `operation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
 --
 -- AUTO_INCREMENT pour la table `parking`
 --
@@ -442,12 +491,12 @@ ALTER TABLE `parking`
 -- AUTO_INCREMENT pour la table `planning`
 --
 ALTER TABLE `planning`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT pour la table `quai`
 --
 ALTER TABLE `quai`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 --
 -- AUTO_INCREMENT pour la table `remorque`
 --
@@ -462,7 +511,7 @@ ALTER TABLE `remorque_type`
 -- AUTO_INCREMENT pour la table `traction`
 --
 ALTER TABLE `traction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT pour la table `user`
 --

@@ -62,7 +62,7 @@ class PlanningController extends AbstractController
        if($form->isSubmitted() && $form->isValid()) {
            $this->em->persist($planning);
            $this->em->flush();
-           $this->addFlash('success', 'La tournée <strong>'.$planning->getTournee().'</strong> à été ajouté');
+           $this->addFlash('success', 'La tournée <strong>'.$planning->getTournee().'</strong> à été ajoutée');
            return $this->redirectToRoute('admin.planning.index');
        }
 
@@ -87,7 +87,7 @@ class PlanningController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
-            $this->addFlash('success', 'La tournée <strong>'.$planning->getTournee().'</strong> à été modifié');
+            $this->addFlash('success', 'La tournée <strong>'.$planning->getTournee().'</strong> à été modifiée');
             return $this->redirectToRoute('admin.planning.index');
         }
 
@@ -109,7 +109,7 @@ class PlanningController extends AbstractController
         if($this->isCsrfTokenValid('delete' . $planning->getId(), $request->get('_token'))) {
             $this->em->remove($planning);
             $this->em->flush();
-            $this->addFlash('success', 'La tournée <strong>'.$planning->getTournee().'</strong> à été supprimé');
+            $this->addFlash('success', 'La tournée <strong>'.$planning->getTournee().'</strong> à été supprimée');
         }
         return $this->redirectToRoute('admin.planning.index');
     }

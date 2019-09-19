@@ -77,7 +77,7 @@ class RemorqueController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $remorque->setMaintenance(true);
             $this->em->flush();
-            $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> a étais bloquée </strong>');
+            $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été bloquée </strong>');
             return $this->redirectToRoute('remorques');
         }
 
@@ -99,7 +99,7 @@ class RemorqueController extends AbstractController
         $remorque->setMaintenance(false);
         $remorque->setMaintenanceRaison("");
         $this->em->flush();
-        $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> a étais bloquée </strong>');
+        $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été débloquée </strong>');
         return $this->redirectToRoute('remorques');
     }
 
@@ -120,6 +120,7 @@ class RemorqueController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $this->em->flush();
+            $this->addFlash('success', 'Le statut de la remorque <strong>'.$remorque->getRemorque().'</strong> à été changé');
             return $this->redirectToRoute('remorques');
         }
 
@@ -162,6 +163,7 @@ class RemorqueController extends AbstractController
                 $this->em->persist($operation);
             }
             $this->em->flush();
+            $this->addFlash('success', 'La remorque <strong>'.$remorque->getRemorque().'</strong> à été mise sur le parking : <strong>'.$operation->getParking()->getDenomination().'  </strong>');
             return $this->redirectToRoute('remorques');
         }
 

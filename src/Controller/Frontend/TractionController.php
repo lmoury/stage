@@ -126,7 +126,7 @@ class TractionController extends AbstractController
                 $operationRe->setTraction($operation->getTraction());
                 $this->em->flush();
             }
-            $operation->setRemorque(getRemorque());
+            $operation->setRemorque($operation->getRemorque());
             $operation->setTraction(NULL);
             $this->em->flush();
             //$this->addFlash('success', 'Le quai <strong>'.$operation->getQuai()->getNumero().'</strong> à été modifié, ajout de la remorque <strong>'.$operation->getRemorque()->getRemorque().'</strong>');

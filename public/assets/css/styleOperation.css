@@ -1,17 +1,17 @@
 .etat0 {
-	background-color: green;
+	background-color: #28a745;
 }
 .etat1 {
 	background-color: orange;
 }
 .etat2 {
-	background-color: red;
+	background-color: #dc3545;
 }
 .etat3 {
-	background-color: yellow;
+	background-color: #ffc107;
 }
 .etat4 {
-	background-color: blue;
+	background-color: #17a2b8;
 }
 .ligne {
 	display: inline-flex;
